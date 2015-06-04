@@ -1,0 +1,12 @@
+{
+  "name": "reversi",
+  "version": "0.0.0",
+  "authors": [
+    "Peter Simon <simonpepe@gmail.com>"
+  ],
+  "description": "Reversi game written JavaScript",
+  "license": "MIT",
+  "dependencies": {
+    "base.less": "git@github.com:loonkwil/base.less.git#~0.1.0"
+  }
+}
