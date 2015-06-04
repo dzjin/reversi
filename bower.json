@@ -4,7 +4,7 @@
   "authors": [
     "Peter Simon <simonpepe@gmail.com>"
   ],
-  "description": "Reversi game written JavaScript",
+  "description": "Strategy board game for two players",
   "license": "MIT",
   "dependencies": {
     "base.less": "git@github.com:loonkwil/base.less.git#~0.1.0"

@@ -1,3 +1,3 @@
 # Reversi
 
-Reversi game written JavaScript.
+Online strategy board game for two players.
