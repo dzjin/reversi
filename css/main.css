@@ -1,0 +1,25 @@
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.light {
+  color: #ddd;
+}
+.dark {
+  color: #666;
+}
+
+/* from http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
+.ratio-1by1 {
+  position: relative;
+}
+.ratio-1by1:before {
+  content: '';
+  display: block;
+  padding-top: 100%;
+}
+.ratio-1by1>* {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+}

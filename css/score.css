@@ -1,0 +1,11 @@
+#score .light,
+#score .dark {
+  padding: 1em;
+  border-left: .3em solid transparent;
+}
+#score .light.on-move {
+  border-left-color: #ddd;
+}
+#score .dark.on-move {
+  border-left-color: #666;
+}
