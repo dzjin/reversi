@@ -2,6 +2,7 @@
 #score .dark {
   padding: 1em;
   border-left: .3em solid transparent;
+  transition: border-left-color .2s linear;
 }
 #score .light.on-move {
   border-left-color: #ddd;
