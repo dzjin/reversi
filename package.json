@@ -1,0 +1,17 @@
+{
+  "name": "reversi",
+  "version": "0.0.0",
+  "authors": [
+    "Peter Simon <simonpepe@gmail.com>"
+  ],
+  "description": "Strategy board game for two players",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:loonkwil/reversi.git"
+  },
+  "scripts": {
+  },
+  "devDependencies": {
+  }
+}
