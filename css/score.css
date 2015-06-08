@@ -1,12 +1,8 @@
-#score .light,
-#score .dark {
+#score {
   padding: 1em;
-  border-left: .3em solid transparent;
-  transition: border-left-color .2s linear;
+  width: 7em;
 }
-#score .light.on-move {
-  border-left-color: #ddd;
-}
-#score .dark.on-move {
-  border-left-color: #666;
+
+.on-move {
+  text-decoration: underline;
 }
