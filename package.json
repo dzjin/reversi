@@ -11,7 +11,25 @@
     "url": "git@github.com:loonkwil/reversi.git"
   },
   "scripts": {
+    "start": "gulp"
   },
   "devDependencies": {
+    "del": "^1.2.0",
+    "babel": "^5.5.0",
+    "babel-loader": "^5.1.0",
+    "autoprefixer-loader": "^2.0.0",
+    "css-loader": "^0.14.0",
+    "gulp": "^3.9.0",
+    "gulp-git": "^1.2.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-minify-html": "^1.0.0",
+    "gulp-util": "^3.0.0",
+    "nopt": "^3.0.0",
+    "semver": "^4.3.0",
+    "style-loader": "^0.12.0",
+    "url-loader": "^0.5.0",
+    "webpack": "^1.9.0",
+    "run-sequence": "^1.1.0",
+    "webpack-dev-server": "^1.9.0"
   }
 }

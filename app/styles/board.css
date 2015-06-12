@@ -1,8 +1,7 @@
 #board {
   max-width: 80vh;
-  border: 0 solid #ddd;
-  border-top-width: 1px;
-  border-left-width: 1px;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
 }
 
 .last-move {
@@ -11,9 +10,8 @@
 
 [data-disk] {
   position: relative;
-  border: 0 solid #ddd;
-  border-bottom-width: 1px;
-  border-right-width: 1px;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
   transition: background-color .2s linear;
 }
 
