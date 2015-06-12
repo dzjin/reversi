@@ -11,6 +11,7 @@
     "url": "git@github.com:loonkwil/reversi.git"
   },
   "scripts": {
+    "test": "gulp test",
     "start": "gulp"
   },
   "devDependencies": {
@@ -21,6 +22,11 @@
     "css-loader": "^0.14.0",
     "gulp": "^3.9.0",
     "gulp-git": "^1.2.0",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-jsonlint": "^1.0.0",
+    "gulp-csslint": "^0.1.0",
+    "gulp-htmlhint": "^0.1.0",
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-html": "^1.0.0",
     "gulp-util": "^3.0.0",

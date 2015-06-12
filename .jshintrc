@@ -25,5 +25,8 @@
 
   "maxerr": 20,
 
-  "node": true
+  "node": true,
+  "browser": true,
+  "predef": [ "define" ],
+  "esnext": true
 }

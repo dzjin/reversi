@@ -146,6 +146,46 @@ gulp.task('bump-tag', function(cb) {
 });
 
 
+// Task for testing and linting
+// Usage: `gulp test` or `npm test`
+// separately use: `gulp qunit` and `gulp lint`
+gulp.task('test', [ 'lint' ]);
+
+gulp.task('qunit', function() {
+    return gulp.src(config.path.test + '/index.html').pipe(plugins.qunit());
+});
+
+gulp.task('lint', [ 'jscs', 'jshint', 'jsonlint', 'csslint', 'htmllint' ]);
+
+gulp.task('jscs', function() {
+    return gulp.src(config.filesForAnalyze.js).pipe(plugins.jscs());
+});
+
+gulp.task('jshint', function() {
+    return gulp.src(config.filesForAnalyze.js).
+        pipe(plugins.jshint()).
+        pipe(plugins.jshint.reporter());
+});
+
+gulp.task('jsonlint', function() {
+    return gulp.src(config.filesForAnalyze.json).
+        pipe(plugins.jsonlint()).
+        pipe(plugins.jsonlint.reporter());
+});
+
+gulp.task('csslint', function() {
+    return gulp.src(config.filesForAnalyze.css).
+        pipe(plugins.csslint('./.csslintrc')).
+        pipe(plugins.csslint.reporter());
+});
+
+gulp.task('htmllint', function() {
+    return gulp.src(config.filesForAnalyze.html).
+        pipe(plugins.htmlhint({ htmlhintrc: './.htmlhintrc' })).
+        pipe(plugins.htmlhint.reporter());
+});
+
+
 // Task for building for production
 gulp.task('dist', [ 'build' ]);
 

@@ -11,6 +11,17 @@ config.path = {
     dist: 'dist'
 };
 
+// Files for linting and stuff like that
+config.filesForAnalyze = {
+    js: [
+        'gulpconfig.js', 'gulpfile.js',
+        config.path.app + '/scripts/**/*.js',
+    ],
+    json: [ '*.json', '.*rc' ],
+    css: [ config.path.app + '/styles/**/*.css' ],
+    html: [ config.path.app + '/index.html' ]
+};
+
 // Plugins preferences
 config.plugins = {
     // Bumps the version number (and create a git commit and tag)
