@@ -57,5 +57,6 @@
     "checkParamNames": true,
     "requireParamTypes": true
   },
-  "excludeFiles": [ "node_modules/**", "bower_components/**", "**.min.js" ]
+  "excludeFiles": [ "node_modules/**", "bower_components/**", "**.min.js" ],
+  "esnext": true
 }
