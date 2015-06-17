@@ -4,6 +4,7 @@
   border-left: 1px solid #ddd;
 }
 
+/* cells */
 .last-move {
   background-color: #98d4f7;
 }
@@ -12,25 +13,38 @@
   position: relative;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
-  transition: background-color .2s linear;
 }
-
 [data-disk=""]:hover {
   background-color: #fcfcfc;
 }
 
-[data-disk]:before {
+/* disks */
+[data-disk]:before,
+[data-disk]:after {
   content: '';
   position: absolute;
   top: 5%; right: 5%; bottom: 5%; left: 5%;
   border-radius: 50%;
   border: 1px solid transparent;
+  backface-visibility: hidden;
+  transform: rotateX(180deg);
+  transition: transform .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-[data-disk="dark"]:before {
+
+/* light disk */
+[data-disk]:before {
+  background-color: #ddd;
+  border-color: #666;
+}
+[data-disk="light"]:before {
+  transform: rotateX(0deg);
+}
+
+/* dark disk */
+[data-disk]:after {
   background-color: #666;
   border-color: #ddd;
 }
-[data-disk="light"]:before {
-  background-color: #ddd;
-  border-color: #666;
+[data-disk="dark"]:after {
+  transform: rotateX(0deg);
 }
