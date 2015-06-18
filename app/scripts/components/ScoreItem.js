@@ -18,14 +18,13 @@ define([ 'react' ], function(React) {
             };
         },
         render: function() {
-            let classes = [ 'row', 'row-gutters', this.props.color ];
+            let classes = [ this.props.color ];
             if (this.props.onMove === this.props.color) {
                 classes.push('on-move');
             }
 
             return DOM.div({ className: classes.join(' ') },
-                DOM.div({ className: 'col' }, this.props.color),
-                DOM.div({ className: 'col u-text-right' }, this.props.score)
+                this.props.color + ': ' + this.props.score
             );
         }
     });

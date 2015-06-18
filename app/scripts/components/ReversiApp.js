@@ -48,11 +48,19 @@ define([ 'react', './Score', './Board' ], function(React, Score, Board) {
         },
         render: function() {
             return DOM.div(null,
-                React.createElement(Score, {
-                    onMove: this.state.onMove,
-                    scores: this.state.scores
-                }),
-                DOM.div({ className: 'container' },
+                DOM.header({ className: 'row row--center' },
+                    DOM.div({ className: 'col' },
+                        React.createElement(Score, {
+                            onMove: this.state.onMove,
+                            scores: this.state.scores
+                        })
+                    ),
+                    DOM.div({ className: 'col u-text-right' },
+                        DOM.h1(null, 'Reversi'),
+                        DOM.small(null, 'Strategy board game for two players')
+                    )
+                ),
+                DOM.main({ className: 'container' },
                     React.createElement(Board, {
                         size: this.props.size,
                         disks: this.state.disks

@@ -4,7 +4,7 @@
 require('normalize-css/normalize.css');
 require('base.less/dist/css/base.css');
 require('../styles/main.css');
-require('../styles/score.css');
+require('../styles/header.css');
 require('../styles/board.css');
 
 // JS

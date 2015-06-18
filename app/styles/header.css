@@ -1,0 +1,16 @@
+header {
+  padding: 1em;
+}
+
+header h1 {
+  margin: 0;
+}
+
+#score .light,
+#score .dark {
+  margin: .5em 0;
+}
+
+.on-move {
+  text-decoration: underline;
+}
