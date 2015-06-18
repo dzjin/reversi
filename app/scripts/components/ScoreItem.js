@@ -1,4 +1,4 @@
-define([ 'react' ], function(React) {
+define([ 'react', '../helpers' ], function(React, helpers) {
     'use strict';
 
     let DOM = React.DOM;
@@ -24,7 +24,7 @@ define([ 'react' ], function(React) {
             }
 
             return DOM.div({ className: classes.join(' ') },
-                this.props.color + ': ' + this.props.score
+                helpers.capitalize(this.props.color) + ': ' + this.props.score
             );
         }
     });

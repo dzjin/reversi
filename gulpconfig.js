@@ -78,6 +78,9 @@ config.plugins = {
                 }, {
                     test: /\.(png|jpg|svg)$/,
                     loaders: [ 'url-loader?limit=8192' ]
+                }, {
+                    test: /\.json$/,
+                    loaders: [ 'json' ]
                 }
             ]
         }

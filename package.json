@@ -8,13 +8,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:loonkwil/reversi.git"
+    "url": "https://github.com/loonkwil/reversi.git"
   },
   "scripts": {
     "test": "gulp test",
     "start": "gulp"
   },
   "dependencies": {
+    "json-loader": "^0.5.0",
     "react": "^0.13.0"
   },
   "devDependencies": {
