@@ -5,7 +5,7 @@ define(function() {
      * @param {string} str
      * @return {string}
      */
-    var capitalize = function(str) {
+    let capitalize = function(str) {
         return str.substr(0, 1).toUpperCase() + str.substr(1);
     };
 
