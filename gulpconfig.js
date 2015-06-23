@@ -14,7 +14,7 @@ config.path = {
 // Files for linting and stuff like that
 config.filesForAnalyze = {
     js: [
-        'gulpconfig.js', 'gulpfile.js',
+        'gulpconfig.js', 'gulpfile.babel.js',
         config.path.app + '/scripts/**/*.js',
     ],
     json: [ '*.json', '.*rc' ],
