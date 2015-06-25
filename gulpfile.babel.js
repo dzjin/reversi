@@ -147,7 +147,6 @@ gulp.task('bump-tag', (cb) => {
 
 // Task for testing and linting
 // Usage: `gulp test` or `npm test`
-// separately use: `gulp qunit` and `gulp lint`
 gulp.task('test', [ 'lint' ]);
 
 gulp.task('qunit', () =>
