@@ -1,18 +1,21 @@
 'use strict';
 
 // CSS
-require('normalize-css/normalize.css');
-require('base.less/dist/css/base.css');
-require('../styles/main.css');
-require('../styles/header.css');
-require('../styles/board.css');
+/*jshint unused:false */
+import normalize from 'normalize-css/normalize.css';
+import base from 'base.less/dist/css/base.css';
+import main from '../styles/main.css';
+import header from '../styles/header.css';
+import board from '../styles/board.css';
 
 // JS
-require('babel/polyfill');
+import polyfill from 'babel/polyfill';
 
-require([ 'react', './components/ReversiApp' ], function(React, ReversiApp) {
-    React.render(
-        React.createElement(ReversiApp, { size: 8 }),
-        document.body
-    );
-});
+import React from 'react';
+import ReversiApp from './components/ReversiApp';
+
+
+React.render(
+    React.createElement(ReversiApp, { size: 8 }),
+    document.body
+);
