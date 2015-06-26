@@ -15,13 +15,13 @@ export default React.createClass({
             dark: React.PropTypes.number.isRequired
         })
     },
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             onMove: 'light',
             scores: { light: 0, dark: 0 }
         };
     },
-    render: function() {
+    render() {
         let scoreItems = [ 'light', 'dark' ].map(oneColor =>
             React.createElement(ScoreItem, {
                 key: oneColor,

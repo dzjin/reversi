@@ -12,21 +12,19 @@ const DARK_DISK = 2;
 /**
  * @param {number} size
  */
-let createEmptyArray = function(size) {
-    return Array.apply(null, { length: size });
-};
+let createEmptyArray = (size) =>
+    Array.apply(null, { length: size });
 
 /**
  * @param {number} size
  */
-let createEmptyRow = function(size) {
-    return createEmptyArray(size).fill(EMPTY_DISK);
-};
+let createEmptyRow = (size) =>
+    createEmptyArray(size).fill(EMPTY_DISK);
 
 
 export default React.createClass({
     displayName: 'BoardRow',
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             disks: createEmptyRow
         };
@@ -37,7 +35,7 @@ export default React.createClass({
             React.PropTypes.oneOf([ EMPTY_DISK, LIGHT_DISK, DARK_DISK ])
         )
     },
-    render: function() {
+    render() {
         let cells = createEmptyArray(this.props.size).
             map((oneItem, index) =>
                 React.createElement(BoardCell, {

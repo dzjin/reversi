@@ -15,14 +15,13 @@ const DARK_DISK = 2;
 /**
  * @param {number} size
  */
-let createEmptyArray = function(size) {
-    return Array.apply(null, { length: size });
-};
+let createEmptyArray = (size) =>
+    Array.apply(null, { length: size });
 
 /**
  * @param {number} size
  */
-let createInitialBoard = function(size) {
+let createInitialBoard = (size) => {
     let disks = createEmptyArray(size).
         map(() =>
             createEmptyArray(size).fill(EMPTY_DISK)
@@ -41,7 +40,7 @@ let createInitialBoard = function(size) {
 
 export default React.createClass({
     displayName: 'ReversiApp',
-    getInitialState: function() {
+    getInitialState() {
         return {
             onMove: 'light',
             scores: { light: 2, dark: 2 },
@@ -51,7 +50,7 @@ export default React.createClass({
     propTypes: {
         size: React.PropTypes.number.isRequired
     },
-    render: function() {
+    render() {
         return DOM.div({ className: 'app' },
             DOM.header({ className: 'row row--center' },
                 DOM.div({ className: 'col' },

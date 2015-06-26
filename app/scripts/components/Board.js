@@ -12,24 +12,21 @@ const DARK_DISK = 2;
 /**
  * @param {number} size
  */
-let createEmptyArray = function(size) {
-    return Array.apply(null, { length: size });
-};
+let createEmptyArray = (size) =>
+    Array.apply(null, { length: size });
 
 /**
  * @param {number} size
  */
-let createEmptyBoard = function(size) {
-    return createEmptyArray(size).
-        map(() =>
-            createEmptyArray(size).fill(EMPTY_DISK)
-        );
-};
+let createEmptyBoard = (size) =>
+    createEmptyArray(size).map(() =>
+        createEmptyArray(size).fill(EMPTY_DISK)
+    );
 
 
 export default React.createClass({
     displayName: 'Board',
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             disks: createEmptyBoard
         };
@@ -42,7 +39,7 @@ export default React.createClass({
             )
         )
     },
-    render: function() {
+    render() {
         let rows = createEmptyArray(this.props.size).
             map((oneItem, index) =>
                 React.createElement(BoardRow, {

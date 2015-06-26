@@ -13,13 +13,13 @@ export default React.createClass({
         onMove: React.PropTypes.string,
         score: React.PropTypes.number
     },
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             onMove: 'light',
             score: 0
         };
     },
-    render: function() {
+    render() {
         let classes = [ this.props.color ];
         if (this.props.onMove === this.props.color) {
             classes.push('on-move');

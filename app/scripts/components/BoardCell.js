@@ -11,12 +11,12 @@ const DARK_DISK = 2;
 
 export default React.createClass({
     displayName: 'BoardCell',
-    getInitialState: function() {
+    getInitialState() {
         return {
             value: this.props.value
         };
     },
-    getDefaultProps: function() {
+    getDefaultProps() {
         return {
             value: EMPTY_DISK
         };
@@ -24,13 +24,13 @@ export default React.createClass({
     propTypes: {
         value: React.PropTypes.oneOf([ EMPTY_DISK, LIGHT_DISK, DARK_DISK ])
     },
-    handleClick: function(e) {
+    handleClick(e) {
         e.preventDefault();
         let opposite = (this.state.value === LIGHT_DISK) ?
             DARK_DISK : LIGHT_DISK;
         this.setState({ value: opposite });
     },
-    render: function() {
+    render() {
         let disk;
         switch (this.state.value) {
         case EMPTY_DISK:
