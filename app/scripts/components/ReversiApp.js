@@ -15,16 +15,11 @@ const DARK_DISK = 2;
 /**
  * @param {number} size
  */
-let createEmptyArray = (size) =>
-    Array.apply(null, { length: size });
-
-/**
- * @param {number} size
- */
 let createInitialBoard = (size) => {
-    let disks = createEmptyArray(size).
+    let disks = (new Array(size)).
+        fill(undefined).
         map(() =>
-            createEmptyArray(size).fill(EMPTY_DISK)
+            (new Array(size)).fill(EMPTY_DISK)
         );
 
     let center = Math.floor((size - 1) / 2);
