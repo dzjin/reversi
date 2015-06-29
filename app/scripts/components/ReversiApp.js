@@ -2,15 +2,15 @@
 
 import React from 'react';
 import Score from './Score';
-import Board from './Board';
+import ReactBoard from 'ReactBoard';
 import { capitalize } from '../helpers';
 import pkg from '../../../package.json';
 
 let DOM = React.DOM;
 
-const EMPTY_DISK = 0;
-const LIGHT_DISK = 1;
-const DARK_DISK = 2;
+const EMPTY_DISK = '';
+const LIGHT_DISK = 'light';
+const DARK_DISK = 'dark';
 
 /**
  * @param {number} size
@@ -60,10 +60,26 @@ export default React.createClass({
                 )
             ),
             DOM.main({ className: 'container' },
-                React.createElement(Board, {
-                    size: this.props.size,
-                    disks: this.state.disks
-                })
+                DOM.div(
+                    { className: 'ratio-1by1 center react-board-container' },
+                    React.createElement(ReactBoard, {
+                        size: this.props.size,
+                        values: this.state.disks,
+                        clickHandler: ({ row, col }) => {
+                            let disks = this.state.disks;
+                            switch (disks[row][col]) {
+                            case LIGHT_DISK:
+                                disks[row][col] = DARK_DISK;
+                                break;
+                            default:
+                                disks[row][col] = LIGHT_DISK;
+                                break;
+                            }
+
+                            this.setState({ disks });
+                        }
+                    })
+                )
             ),
             DOM.footer({ className: 'u-text-right' },
                 'Fork me on ',

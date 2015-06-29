@@ -1,27 +1,42 @@
-#board {
+.react-board-container {
   max-width: 80vh;
   width: calc(100vw - 2em);
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
 }
 
+.react-board {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.react-board-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 0 100%;
+}
+
+.react-board-cell {
+  flex: 1;
+}
+
 /* cells */
-.last-move {
+.react-board-highlighted {
   background-color: #98d4f7;
 }
 
-[data-disk] {
+[data-cell-value] {
   position: relative;
   border-bottom: 1px solid #ddd;
   border-right: 1px solid #ddd;
 }
-[data-disk=""]:hover {
+[data-cell-value=""]:hover {
   background-color: #fcfcfc;
 }
 
 /* disks */
-[data-disk]:before,
-[data-disk]:after {
+[data-cell-value]:before,
+[data-cell-value]:after {
   content: '';
   position: absolute;
   top: 5%; right: 5%; bottom: 5%; left: 5%;
@@ -33,19 +48,19 @@
 }
 
 /* light disk */
-[data-disk]:before {
+[data-cell-value]:before {
   background-color: #ddd;
   border-color: #666;
 }
-[data-disk="light"]:before {
+[data-cell-value="light"]:before {
   transform: rotateX(0deg);
 }
 
 /* dark disk */
-[data-disk]:after {
+[data-cell-value]:after {
   background-color: #666;
   border-color: #ddd;
 }
-[data-disk="dark"]:after {
+[data-cell-value="dark"]:after {
   transform: rotateX(0deg);
 }
