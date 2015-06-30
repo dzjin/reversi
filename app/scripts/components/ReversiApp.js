@@ -33,18 +33,16 @@ let createInitialBoard = (size) => {
 };
 
 
-export default React.createClass({
-    displayName: 'ReversiApp',
-    getInitialState() {
-        return {
+export default class ReversiApp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             onMove: 'light',
             scores: { light: 2, dark: 2 },
-            disks: createInitialBoard(this.props.size)
+            disks: createInitialBoard(props.size)
         };
-    },
-    propTypes: {
-        size: React.PropTypes.number.isRequired
-    },
+    }
+
     render() {
         return DOM.div({ className: 'app' },
             DOM.header({ className: 'row row--center' },
@@ -89,4 +87,8 @@ export default React.createClass({
             )
         );
     }
-});
+}
+
+ReversiApp.propTypes = {
+    size: React.PropTypes.number.isRequired
+};

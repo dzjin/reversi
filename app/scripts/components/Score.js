@@ -6,21 +6,15 @@ import ScoreItem from './ScoreItem';
 let DOM = React.DOM;
 
 
-export default React.createClass({
-    displayName: 'Score',
-    propTypes: {
-        onMove: React.PropTypes.string,
-        scores: React.PropTypes.shape({
-            light: React.PropTypes.number.isRequired,
-            dark: React.PropTypes.number.isRequired
-        })
-    },
-    getDefaultProps() {
-        return {
+export default class Score extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             onMove: 'light',
             scores: { light: 0, dark: 0 }
         };
-    },
+    }
+
     render() {
         let scoreItems = [ 'light', 'dark' ].map(oneColor =>
             React.createElement(ScoreItem, {
@@ -33,4 +27,12 @@ export default React.createClass({
 
         return DOM.div({ id: 'score' }, scoreItems);
     }
-});
+}
+
+Score.propTypes = {
+    onMove: React.PropTypes.string,
+    scores: React.PropTypes.shape({
+        light: React.PropTypes.number.isRequired,
+        dark: React.PropTypes.number.isRequired
+    })
+};
