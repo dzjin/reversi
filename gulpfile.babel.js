@@ -132,8 +132,7 @@ gulp.task('bump-commit', () => {
     let packageFiles = config.plugins.bump.packageFiles;
     let message = `Release v${getVersionNumberFromFile(packageFiles)}`;
 
-    let filesToCommit = [].concat(packageFiles, config.path.dist + '/**/*');
-    return gulp.src(filesToCommit).pipe(plugins.git.commit(message));
+    return gulp.src(packageFiles).pipe(plugins.git.commit(message));
 });
 
 gulp.task('bump-tag', (cb) => {
@@ -141,7 +140,7 @@ gulp.task('bump-tag', (cb) => {
     let version = getVersionNumberFromFile(packageFiles);
     let message = `Release v${version}`;
 
-    plugins.git.tag(version, message, cb);
+    plugins.git.tag(`v${version}`, message, cb);
 });
 
 
