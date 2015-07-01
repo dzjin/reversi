@@ -7,20 +7,13 @@ let DOM = React.DOM;
 
 
 export default class Score extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            onMove: 'light',
-            scores: { light: 0, dark: 0 }
-        };
-    }
-
     render() {
-        let scoreItems = [ 'light', 'dark' ].map(oneColor =>
+        let colors = Object.getOwnPropertyNames(this.props.scores);
+        let scoreItems = colors.map(oneColor =>
             React.createElement(ScoreItem, {
                 key: oneColor,
                 color: oneColor,
-                onMove: this.props.onMove,
+                isOnMove: (this.props.onMove === oneColor),
                 score: this.props.scores[oneColor]
             })
         );
@@ -30,9 +23,6 @@ export default class Score extends React.Component {
 }
 
 Score.propTypes = {
-    onMove: React.PropTypes.string,
-    scores: React.PropTypes.shape({
-        light: React.PropTypes.number.isRequired,
-        dark: React.PropTypes.number.isRequired
-    })
+    onMove: React.PropTypes.string.isRequired,
+    scores: React.PropTypes.object.isRequired
 };

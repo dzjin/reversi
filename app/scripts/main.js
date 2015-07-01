@@ -15,7 +15,4 @@ import React from 'react';
 import ReversiApp from './components/ReversiApp';
 
 
-React.render(
-    React.createElement(ReversiApp, { size: 8 }),
-    document.body
-);
+React.render(React.createElement(ReversiApp), document.body);

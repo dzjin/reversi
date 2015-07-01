@@ -7,17 +7,9 @@ let DOM = React.DOM;
 
 
 export default class ScoreItem extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            onMove: 'light',
-            score: 0
-        };
-    }
-
     render() {
         let classes = [ this.props.color ];
-        if (this.props.onMove === this.props.color) {
+        if (this.props.isOnMove) {
             classes.push('on-move');
         }
 
@@ -29,6 +21,11 @@ export default class ScoreItem extends React.Component {
 
 ScoreItem.propTypes = {
     color: React.PropTypes.string.isRequired,
-    onMove: React.PropTypes.string,
+    isOnMove: React.PropTypes.bool,
     score: React.PropTypes.number
+};
+
+ScoreItem.defaultProps = {
+    isOnMove: false,
+    scores: 0
 };
