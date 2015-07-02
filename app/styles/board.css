@@ -64,3 +64,30 @@
 [data-cell-value="dark"]:after {
   transform: rotateX(0deg);
 }
+
+[data-state="error"] .react-board-container {
+  animation-name: swing;
+  animation-duration: .3s;
+}
+
+@keyframes swing {
+  20% {
+    transform: rotate3d(0, 0, 1, 2deg);
+  }
+
+  40% {
+    transform: rotate3d(0, 0, 1, -2deg);
+  }
+
+  60% {
+    transform: rotate3d(0, 0, 1, 1deg);
+  }
+
+  80% {
+    transform: rotate3d(0, 0, 1, -1deg);
+  }
+
+  100% {
+    transform: rotate3d(0, 0, 1, 0deg);
+  }
+}

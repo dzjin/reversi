@@ -3,7 +3,7 @@
 import React from 'react';
 import Score from './Score';
 import ReactBoard from 'ReactBoard';
-import { capitalize } from '../helpers';
+import { capitalize, one } from '../helpers';
 import Game from '../Game';
 import pkg from '../../../package.json';
 
@@ -19,7 +19,8 @@ export default class ReversiApp extends React.Component {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.disks,
-            lastMove: null
+            lastMove: null,
+            gameState: 'ready'
         };
     }
 
@@ -27,10 +28,17 @@ export default class ReversiApp extends React.Component {
      * @param {{ row: number, col: number, cellName: string, cellValue: * }}
      */
     clickHandler({ row, col }) {
+        if (this.state.gameState !== 'ready') { return; }
+
         try {
             this.game.move({ row, col, color: this.props.myColor });
         } catch (e) {
-            console.error(e.message);
+            this.setState({ gameState: 'error' });
+
+            let $boardContainer = this.refs.boardContainer.getDOMNode();
+            one($boardContainer, 'animationend', () =>
+                this.setState({ gameState: 'ready' })
+            );
             return;
         }
 
@@ -38,7 +46,8 @@ export default class ReversiApp extends React.Component {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.disks,
-            lastMove: null
+            lastMove: null,
+            gameState: 'waiting'
         });
 
         // for DEBUG
@@ -57,7 +66,8 @@ export default class ReversiApp extends React.Component {
                 onMove: this.game.onMove,
                 scores: this.game.scores,
                 disks: this.game.disks,
-                lastMove: [ row, col ]
+                lastMove: [ row, col ],
+                gameState: 'ready'
             });
             clearInterval(tick);
         }, 500);
@@ -76,7 +86,7 @@ export default class ReversiApp extends React.Component {
             clickHandler: this.clickHandler.bind(this)
         });
 
-        return DOM.div({ className: 'app' },
+        return DOM.div({ className: 'app', 'data-state': this.state.gameState },
             DOM.header({ className: 'row row--center' },
                 DOM.div({ className: 'col' }, ScoreElement),
                 DOM.div({ className: 'col u-text-right' },
@@ -86,7 +96,10 @@ export default class ReversiApp extends React.Component {
             ),
             DOM.main({ className: 'container' },
                 DOM.div(
-                    { className: 'ratio-1by1 center react-board-container' },
+                    {
+                        className: 'ratio-1by1 center react-board-container',
+                        ref: 'boardContainer'
+                    },
                     ReactBoardElement
                 )
             ),
