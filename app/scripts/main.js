@@ -12,7 +12,7 @@ import board from '../styles/board.css';
 import polyfill from 'babel/polyfill';
 
 import React from 'react';
-import ReversiApp from './components/ReversiApp';
+import ReversiApp from './ui/ReversiApp';
 
 
 React.render(React.createElement(ReversiApp), document.body);

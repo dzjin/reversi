@@ -4,47 +4,33 @@ import React from 'react';
 import Score from './Score';
 import ReactBoard from 'ReactBoard';
 import { capitalize } from '../helpers';
+import Game from '../Game';
 import pkg from '../../../package.json';
 
 let DOM = React.DOM;
-
-const BOARD_SIZE = 8;
-
-/**
- * @return {Array.<Array.<string>>}
- */
-let createInitialBoard = () => {
-    let disks = (new Array(8)).
-        fill(null).
-        map(() => (new Array(BOARD_SIZE)).fill(''));
-
-    let center = Math.floor((BOARD_SIZE - 1) / 2);
-
-    disks[center][center] = 'light';
-    disks[center][center + 1] = 'dark';
-    disks[center + 1][center] = 'dark';
-    disks[center + 1][center + 1] = 'light';
-
-    return disks;
-};
-
-/**
- * @param {string} color
- * @return {string}
- */
-let getOppositeColor = function(color) {
-    return (color === 'light') ? 'dark' : 'light';
-};
 
 
 export default class ReversiApp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            onMove: 'light',
-            scores: { light: 2, dark: 2 },
-            disks: createInitialBoard(BOARD_SIZE)
-        };
+
+        this.game = new Game();
+        this.state = this.game.getGameState();
+    }
+
+    /**
+     * @param {{ row: number, col: number, cellName: string, cellValue: * }}
+     */
+    clickHandler({ row, col }) {
+        try {
+            let state = this.game.
+                move({ row, col /*, color: this.props.myColor */ }).
+                getGameState();
+
+            this.setState(state);
+        } catch (e) {
+            console.error(e.message);
+        }
     }
 
     render() {
@@ -54,14 +40,9 @@ export default class ReversiApp extends React.Component {
         });
 
         let ReactBoardElement = React.createElement(ReactBoard, {
-            size: BOARD_SIZE,
+            size: this.game.boardSize,
             values: this.state.disks,
-            clickHandler: ({ row, col }) => {
-                let disks = this.state.disks;
-                disks[row][col] = getOppositeColor(disks[row][col]);
-
-                this.setState({ disks });
-            }
+            clickHandler: this.clickHandler.bind(this)
         });
 
         return DOM.div({ className: 'app' },
@@ -87,3 +68,11 @@ export default class ReversiApp extends React.Component {
         );
     }
 }
+
+ReversiApp.propTypes = {
+    myColor: React.PropTypes.string
+};
+
+ReversiApp.defaultProps = {
+    myColor: Game.players[0]
+};
