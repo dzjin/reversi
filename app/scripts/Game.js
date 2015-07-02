@@ -54,21 +54,6 @@ export default class Game {
     }
 
     /**
-     * @return {{
-     *   onMove: string,
-     *   disks: Array.<Array.<string>>,
-     *   scores: {string, number}
-     * }}
-     */
-    getGameState() {
-        return {
-            onMove: this.onMove,
-            scores: this.scores,
-            disks: this.disks
-        };
-    }
-
-    /**
      * @param {{ row: number, col: number, color: string= }
      * @return {{ isValid: boolean, errorMsg: string|undefined }}
      */

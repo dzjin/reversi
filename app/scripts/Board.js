@@ -67,6 +67,13 @@ export default class Board {
     }
 
     /**
+     * @return {boolean}
+     */
+    isFull() {
+        return (this.occurrences.get(Board.EMPTY_FIELD) === 0);
+    }
+
+    /**
      * @return {string}
      */
     toString() {
