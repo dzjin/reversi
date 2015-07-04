@@ -25,13 +25,13 @@ export default class ReversiApp extends React.Component {
     }
 
     /**
-     * @param {{ row: number, col: number, cellName: string, cellValue: * }}
+     * @param {{ col: number, row: number, cellName: string, cellValue: * }}
      */
-    clickHandler({ row, col }) {
+    clickHandler({ col, row }) {
         if (this.state.gameState !== 'ready') { return; }
 
         try {
-            this.game.move({ row, col, color: this.props.myColor });
+            this.game.move({ col, row }, this.props.myColor);
         } catch (e) {
             this.setState({ gameState: 'error' });
 
@@ -53,11 +53,11 @@ export default class ReversiApp extends React.Component {
         // for DEBUG
         if (this.game.board.isFull()) { return; }
         let tick = setInterval(() => {
-            let row = Math.floor(Math.random() * 8);
             let col = Math.floor(Math.random() * 8);
+            let row = Math.floor(Math.random() * 8);
 
             try {
-                this.game.move({ row, col, color: Game.players[1] });
+                this.game.move({ col, row }, Game.players[1]);
             } catch (e) {
                 return;
             }
@@ -70,7 +70,7 @@ export default class ReversiApp extends React.Component {
                 gameState: 'ready'
             });
             clearInterval(tick);
-        }, 500);
+        }, 100);
     }
 
     render() {
@@ -80,7 +80,7 @@ export default class ReversiApp extends React.Component {
         });
 
         let ReactBoardElement = React.createElement(ReactBoard, {
-            size: this.game.boardSize,
+            size: this.game.board.size,
             values: this.state.disks,
             highlight: this.state.lastMove ? [ this.state.lastMove ] : [],
             clickHandler: this.clickHandler.bind(this)

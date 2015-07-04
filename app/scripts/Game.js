@@ -23,17 +23,10 @@ export default class Game {
 
         let center = Math.floor((size - 1) / 2);
         this.board = (new Board(size)).
-            setField({ row: center, col: center, value: first }).
-            setField({ row: center, col: center + 1, value: second }).
-            setField({ row: center + 1, col: center, value: second }).
-            setField({ row: center + 1, col: center + 1, value: first });
-    }
-
-    /**
-     * @return {number}
-     */
-    get boardSize() {
-        return this.board.size;
+            setField({ col: center, row: center }, first).
+            setField({ col: center + 1, row: center }, second).
+            setField({ col: center, row: center + 1 }, second).
+            setField({ col: center + 1, row: center + 1 }, first);
     }
 
     /**
@@ -54,10 +47,116 @@ export default class Game {
     }
 
     /**
-     * @param {{ row: number, col: number, color: string= }
+     * @param {{ col: number, row: number }} from
+     * @param {{ col: number, row: number }} to
+     * @param {string=} color
+     * @return {Array.<{ col: number, row: number }>}
+     */
+    getCapturedDisksFromOneRange(from, to, color = this.onMove) {
+        let capturedDisks = [];
+
+        let disks = this.board.getFields(from, to).slice(1);
+        for (let { col, row, value } of disks) {
+            switch (value) {
+            case Board.EMPTY_FIELD:
+                return [];
+            case color:
+                return capturedDisks;
+            default: // opposite color
+                capturedDisks.push({ col, row });
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param {{ col: number, row: number }}
+     * @param {string=} color
+     * @return {Array.<{ col: number, row: number }>}
+     */
+    getCapturedDisks({ col, row }, color = this.onMove) {
+        let capturedDisks = [];
+
+        /**
+         * @param {{ col: number, row: number }} to
+         * @return {Array.<{ col: number, row: number }>}
+         */
+        let getCapturedDisksUntil = (to) =>
+            this.getCapturedDisksFromOneRange({ col, row }, to, color);
+
+        let max = this.board.size - 1;
+        let min = 0;
+        let diff;
+
+        // . * .
+        // . - .
+        // . . .
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col, row: max })
+        );
+
+        // . . *
+        // . - .
+        // . . .
+        diff = Math.min(max - col, max - row);
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col: col + diff, row: row + diff })
+        );
+
+        // . . .
+        // . - *
+        // . . .
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col: max, row })
+        );
+
+        // . . .
+        // . - .
+        // . . *
+        diff = Math.min(max - col, row);
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col: col + diff, row: row - diff })
+        );
+
+        // . . .
+        // . - .
+        // . * .
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col, row: min })
+        );
+
+        // . . .
+        // . - .
+        // * . .
+        diff = Math.min(col, row);
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col: col - diff, row: row - diff })
+        );
+
+        // . . .
+        // * - .
+        // . . .
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col: min, row })
+        );
+
+        // * . .
+        // . - .
+        // . . .
+        diff = Math.min(col, max - row);
+        capturedDisks.push(
+            ...getCapturedDisksUntil({ col: col - diff, row: row + diff })
+        );
+
+        return capturedDisks;
+    }
+
+    /**
+     * @param {{ col: number, row: number, color: string= }
      * @return {{ isValid: boolean, errorMsg: string|undefined }}
      */
-    validateMove({ row, col, color = this.onMove }) {
+    validateMove({ col, row, color = this.onMove }) {
         if (Game.players.indexOf(color) === -1) {
             return { isValid: false, errorMsg: 'Invalid color.' };
         }
@@ -68,7 +167,7 @@ export default class Game {
 
         let value;
         try {
-            value = this.board.getField({ row, col });
+            value = this.board.getField({ col, row });
         } catch (e) {
             return { isValid: false, errorMsg: e.message };
         }
@@ -77,21 +176,28 @@ export default class Game {
             return { isValid: false, errorMsg: 'The cell is not empty.' };
         }
 
+        if (this.getCapturedDisks({ col, row }, color).length === 0) {
+            return { isValid: false, errorMsg: 'No captured disk.' };
+        }
+
         return { isValid: true };
     }
 
     /**
-     * @param {{ row: number, col: number, color: string= }
+     * @param {{ col: number, row: number, color: string= }
      * @throws {Error}
      * @return {Game}
      */
-    move({ row, col, color = this.onMove }) {
-        let { isValid, errorMsg } = this.validateMove({ row, col, color });
+    move({ col, row }, color = this.onMove) {
+        let { isValid, errorMsg } = this.validateMove({ col, row, color });
         if (!isValid) {
             throw new Error(`Invalid move! ${errorMsg}`);
         }
 
-        this.board.setField({ row, col, value: color });
+        this.board.setField({ col, row }, color);
+        this.getCapturedDisks({ col, row }, color).forEach((oneField) =>
+            this.board.setField(oneField, color)
+        );
 
         this.onMove = getOppositeColor(color);
 
