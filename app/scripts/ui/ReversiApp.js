@@ -53,11 +53,13 @@ export default class ReversiApp extends React.Component {
         // for DEBUG
         if (this.game.board.isFull()) { return; }
         let tick = setInterval(() => {
-            let col = Math.floor(Math.random() * 8);
-            let row = Math.floor(Math.random() * 8);
+            let emptyFields = this.game.board.getEmptyFields();
+
+            let index = Math.floor(Math.random() * emptyFields.length);
+            let field = emptyFields[ index ];
 
             try {
-                this.game.move({ col, row }, Game.players[1]);
+                this.game.move(field, Game.players[1]);
             } catch (e) {
                 return;
             }
@@ -66,7 +68,7 @@ export default class ReversiApp extends React.Component {
                 onMove: this.game.onMove,
                 scores: this.game.scores,
                 disks: this.game.disks,
-                lastMove: [ col, row ],
+                lastMove: field,
                 gameState: 'ready'
             });
             clearInterval(tick);
@@ -79,10 +81,13 @@ export default class ReversiApp extends React.Component {
             scores: this.state.scores
         });
 
+        let highlight = (this.state.lastMove) ?
+            [ [ this.state.lastMove.col, this.state.lastMove.row ] ] : [];
+
         let ReactBoardElement = React.createElement(ReactBoard, {
             size: this.game.board.size,
             values: this.state.disks,
-            highlight: this.state.lastMove ? [ this.state.lastMove ] : [],
+            highlight,
             clickHandler: this.clickHandler.bind(this)
         });
 

@@ -134,6 +134,17 @@ export default class Board {
     }
 
     /**
+     * @return {Array.<{ col: number, row: number }>}
+     */
+    getEmptyFields() {
+        return Array.from(this).
+            filter(({ value }) => (value === Board.EMPTY_FIELD)).
+            map(({ col, row }) => {
+                return { col, row };
+            });
+    }
+
+    /**
      * @return {boolean}
      */
     isFull() {
@@ -166,6 +177,14 @@ export default class Board {
             }).
             reverse().
             join('\n');
+    }
+
+    *[Symbol.iterator]() {
+        for (let col = 0; col < this.size; col += 1) {
+            for (let row = 0; row < this.size; row += 1) {
+                yield { col, row, value: this.data[col][row] };
+            }
+        }
     }
 }
 
