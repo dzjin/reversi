@@ -66,7 +66,7 @@ export default class ReversiApp extends React.Component {
                 onMove: this.game.onMove,
                 scores: this.game.scores,
                 disks: this.game.disks,
-                lastMove: [ row, col ],
+                lastMove: [ col, row ],
                 gameState: 'ready'
             });
             clearInterval(tick);

@@ -90,7 +90,7 @@ export default class Board {
             set(prevValue, this.occurrences.get(prevValue) - 1).
             set(value, (this.occurrences.get(value) || 0) + 1);
 
-        this.data[row][col] = value;
+        this.data[col][row] = value;
 
         return this;
     }
@@ -118,7 +118,7 @@ export default class Board {
             throw new Error('Invalid coordinates!');
         }
 
-        return this.data[row][col];
+        return this.data[col][row];
     }
 
     /**
@@ -153,16 +153,17 @@ export default class Board {
      * @return {string}
      */
     toString() {
-        return this.data.
-            reduce((soFar, oneRow) => {
-                let rowRepresentation = oneRow.reduce((soFar, field) => {
-                    let str = (field === Board.EMPTY_FIELD) ?
-                        '.' : field.toString().substr(0, 1);
-                    return soFar + str;
-                }, '');
+        return getAnEmptyArray(this.size).
+            map((v, row) => {
+                let valuesInOneRow = getAnEmptyArray(this.size).
+                    map((v, col) => this.data[col][row]);
 
-                return soFar.concat(rowRepresentation);
-            }, []).
+                return valuesInOneRow.
+                    map((v) => (v === Board.EMPTY_FIELD) ?
+                        '.' : v.toString().substr(0, 1)
+                    ).
+                    join('');
+            }).
             reverse().
             join('\n');
     }
