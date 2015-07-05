@@ -153,10 +153,11 @@ export default class Game {
     }
 
     /**
-     * @param {{ col: number, row: number, color: string= }
+     * @param {{ col: number, row: number }
+     * @param {string=} color
      * @return {{ isValid: boolean, errorMsg: string|undefined }}
      */
-    validateMove({ col, row, color = this.onMove }) {
+    validateMove({ col, row }, color = this.onMove) {
         if (Game.players.indexOf(color) === -1) {
             return { isValid: false, errorMsg: 'Invalid color.' };
         }
@@ -189,7 +190,7 @@ export default class Game {
      * @return {Game}
      */
     move({ col, row }, color = this.onMove) {
-        let { isValid, errorMsg } = this.validateMove({ col, row, color });
+        let { isValid, errorMsg } = this.validateMove({ col, row }, color);
         if (!isValid) {
             throw new Error(`Invalid move! ${errorMsg}`);
         }
