@@ -178,7 +178,8 @@ export default class Game {
     }
 
     /**
-     * @param {{ col: number, row: number, color: string= }
+     * @param {{ col: number, row: number }}
+     * @param {string=} color
      * @throws {Error}
      * @return {Game}
      */
