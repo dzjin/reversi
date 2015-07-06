@@ -47,42 +47,40 @@ export default class Board {
     }
 
     /**
-     * @param {{ col: number, row: number }}
+     * @param {Array.<number>} coordinates
      * @return {boolean}
      */
-    areCoordinatesValid({ col, row }) {
+    areCoordinatesValid([ x, y ]) {
         return (
-            col >= 0 && col < this.size &&
-            row >= 0 && row < this.size
+            x >= 0 && y < this.size &&
+            x >= 0 && y < this.size
         );
     }
 
     /**
-     * @param {{ col: number, row: number }} from
-     * @param {{ col: number, row: number }} to
-     * @return {Array.<{ col: number, row: number }>}
+     * @param {Array.<number>} from
+     * @param {Array.<number>} to
+     * @return {Array.<Array.<number>>}
      */
-    getCoordinatesBetween(from, to) {
-        let dx = Math.abs(from.col - to.col);
-        let dy = Math.abs(from.row - to.row);
+    getCoordinatesBetween([ x1, y1 ], [ x2, y2 ]) {
+        let dx = Math.abs(x1 - x2);
+        let dy = Math.abs(y1 - y2);
         let length = Math.max(dx, dy) + 1;
 
-        let colSteps = range(from.col, to.col, length).map(Math.round);
-        let rowSteps = range(from.row, to.row, length).map(Math.round);
+        let xCoordinates = range(x1, x2, length).map(Math.round);
+        let yCoordinates = range(y1, y2, length).map(Math.round);
 
-        return zip(colSteps, rowSteps).map(([ col, row ]) => {
-            return { col, row };
-        });
+        return zip(xCoordinates, yCoordinates);
     }
 
     /**
-     * @param {{ col: number, row: number }}
+     * @param {Array.<number>} coordinates
      * @param {*=} value
      * @throws {Error}
      * @return {Board}
      */
-    setField({ col, row }, value = Board.EMPTY_FIELD) {
-        let prevValue = this.getField({ col, row });
+    setField([ x, y ], value = Board.EMPTY_FIELD) {
+        let prevValue = this.getField([ x, y ]);
         if (prevValue === value) {
             return this;
         }
@@ -91,60 +89,58 @@ export default class Board {
             set(prevValue, this.occurrences.get(prevValue) - 1).
             set(value, (this.occurrences.get(value) || 0) + 1);
 
-        this.data[col][row] = value;
+        this.data[x][y] = value;
 
         return this;
     }
 
     /**
-     * @param {{ col: number, row: number }} from
-     * @param {{ col: number, row: number }} to
+     * @param {Array.<number>} from
+     * @param {Array.<number>} to
      * @param {*=} value
      * @throws {Error}
      * @return {Board}
      */
     setFields(from, to, value = Board.EMPTY_FIELD) {
         this.getCoordinatesBetween(from, to).
-            forEach(({ col, row }) => this.setField({ col, row }, value));
+            forEach(coordinates => this.setField(coordinates, value));
 
         return this;
     }
 
     /**
-     * @param {{ col: number, row: number }}
+     * @param {Array.<number>} coordinates
      * @throws {Error}
      * @return {*}
      */
-    getField({ col, row }) {
-        if (!this.areCoordinatesValid({ col, row })) {
+    getField([ x, y ]) {
+        if (!this.areCoordinatesValid([ x, y ])) {
             throw new Error('Invalid coordinates!');
         }
 
-        return this.data[col][row];
+        return this.data[x][y];
     }
 
     /**
-     * @param {{ col: number, row: number }} from
-     * @param {{ col: number, row: number }} to
+     * @param {Array.<number>} from
+     * @param {Array.<number>} to
      * @throws {Error}
-     * @return {Array.<{ col: number, row: number, value: * }>}
+     * @return {Array.<{ coordinates: Array.<number>, value: * }>}
      */
     getFields(from, to) {
         return this.getCoordinatesBetween(from, to).
-            map(({ col, row }) => {
-                return { col, row, value: this.getField({ col, row }) };
+            map(coordinates => {
+                return { coordinates, value: this.getField(coordinates) };
             });
     }
 
     /**
-     * @return {Array.<{ col: number, row: number }>}
+     * @return {Array.<Array.<number>>}
      */
     getEmptyFields() {
         return Array.from(this).
             filter(({ value }) => (value === Board.EMPTY_FIELD)).
-            map(({ col, row }) => {
-                return { col, row };
-            });
+            map(({ coordinates }) => coordinates);
     }
 
     /**
@@ -168,13 +164,13 @@ export default class Board {
      */
     toString() {
         return getAnEmptyArray(this.size).
-            map((v, row) => {
+            map((_, y) => {
                 let valuesInOneRow = getAnEmptyArray(this.size).
-                    map((v, col) => this.data[col][row]);
+                    map((_, x) => this.data[x][y]);
 
                 return valuesInOneRow.
-                    map((v) => (v === Board.EMPTY_FIELD) ?
-                        '.' : v.toString().substr(0, 1)
+                    map(fieldValue => (fieldValue === Board.EMPTY_FIELD) ?
+                        '.' : fieldValue.toString().substr(0, 1)
                     ).
                     join('');
             }).
@@ -183,9 +179,9 @@ export default class Board {
     }
 
     *[Symbol.iterator]() {
-        for (let col = 0; col < this.size; col += 1) {
-            for (let row = 0; row < this.size; row += 1) {
-                yield { col, row, value: this.data[col][row] };
+        for (let x = 0; x < this.size; x += 1) {
+            for (let y = 0; y < this.size; y += 1) {
+                yield { coordinates: [ x, y ], value: this.data[x][y] };
             }
         }
     }

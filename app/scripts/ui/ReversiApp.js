@@ -25,13 +25,16 @@ export default class ReversiApp extends React.Component {
     }
 
     /**
-     * @param {{ col: number, row: number, cellName: string, cellValue: * }}
+     * @param {
+     *   { col: number, row: number, cellName: string, cellValue: * }
+     * } data
      */
     clickHandler({ col, row }) {
         if (this.state.gameState !== 'ready') { return; }
 
+        let coordinates = [ col, row ];
         try {
-            this.game.move({ col, row });
+            this.game.move(coordinates);
         } catch (e) {
             this.setState({ gameState: 'error' });
 
@@ -46,7 +49,7 @@ export default class ReversiApp extends React.Component {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.board.data,
-            lastMove: { col, row }
+            lastMove: coordinates
         });
     }
 
@@ -56,8 +59,7 @@ export default class ReversiApp extends React.Component {
             scores: this.state.scores
         });
 
-        let highlight = (this.state.lastMove) ?
-            [ [ this.state.lastMove.col, this.state.lastMove.row ] ] : [];
+        let highlight = (this.state.lastMove) ? [ this.state.lastMove ] : [];
 
         let ReactBoardElement = React.createElement(ReactBoard, {
             size: this.game.board.size,

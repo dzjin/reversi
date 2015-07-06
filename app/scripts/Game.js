@@ -17,46 +17,46 @@ export default class Game {
      * @param {number=} size
      */
     constructor(size = 8) {
-        let [ first, second ] = Game.players;
+        let [ firstPlayer, secondPlayer ] = Game.players;
 
-        this.onMove = first;
+        this.onMove = firstPlayer;
 
         let center = Math.floor((size - 1) / 2);
         this.board = (new Board(size)).
-            setField({ col: center, row: center }, first).
-            setField({ col: center + 1, row: center }, second).
-            setField({ col: center, row: center + 1 }, second).
-            setField({ col: center + 1, row: center + 1 }, first);
+            setField([ center, center ], firstPlayer).
+            setField([ center + 1, center ], secondPlayer).
+            setField([ center, center + 1 ], secondPlayer).
+            setField([ center + 1, center + 1 ], firstPlayer);
     }
 
     /**
      * @return {{ string, number }}
      */
     get scores() {
-        return Game.players.reduce((soFar, color) => {
-            soFar[color] = this.board.occurrences.get(color);
+        return Game.players.reduce((soFar, player) => {
+            soFar[player] = this.board.occurrences.get(player);
             return soFar;
         }, {});
     }
 
     /**
-     * @param {{ col: number, row: number }} from
-     * @param {{ col: number, row: number }} to
+     * @param {Array.<number>} from
+     * @param {Array.<number>} to
      * @param {string=} color
-     * @return {Array.<{ col: number, row: number }>}
+     * @return {Array.<Array.<number>>}
      */
     getCapturedDisksFromOneRange(from, to, color = this.onMove) {
         let capturedDisks = [];
 
         let disks = this.board.getFields(from, to).slice(1);
-        for (let { col, row, value } of disks) {
+        for (let { coordinates, value } of disks) {
             switch (value) {
             case Board.EMPTY_FIELD:
                 return [];
             case color:
                 return capturedDisks;
             default: // opposite color
-                capturedDisks.push({ col, row });
+                capturedDisks.push(coordinates);
             }
         }
 
@@ -64,19 +64,19 @@ export default class Game {
     }
 
     /**
-     * @param {{ col: number, row: number }}
+     * @param {Array.<number>} coordinates
      * @param {string=} color
-     * @return {Array.<{ col: number, row: number }>}
+     * @return {Array.<Array.<number>>}
      */
-    getCapturedDisks({ col, row }, color = this.onMove) {
+    getCapturedDisks([ x, y ], color = this.onMove) {
         let capturedDisks = [];
 
         /**
-         * @param {{ col: number, row: number }} to
-         * @return {Array.<{ col: number, row: number }>}
+         * @param {Array.<number>} to
+         * @return {Array.<Array.<number>>}
          */
-        let getCapturedDisksUntil = (to) =>
-            this.getCapturedDisksFromOneRange({ col, row }, to, color);
+        let getCapturedDisksUntil = to =>
+            this.getCapturedDisksFromOneRange([ x, y ], to, color);
 
         let max = this.board.size - 1;
         let min = 0;
@@ -86,78 +86,78 @@ export default class Game {
         // . - .
         // . . .
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col, row: max })
+            ...getCapturedDisksUntil([ x, max ])
         );
 
         // . . *
         // . - .
         // . . .
-        diff = Math.min(max - col, max - row);
+        diff = Math.min(max - x, max - y);
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col: col + diff, row: row + diff })
+            ...getCapturedDisksUntil([ x + diff, y + diff ])
         );
 
         // . . .
         // . - *
         // . . .
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col: max, row })
+            ...getCapturedDisksUntil([ max, y ])
         );
 
         // . . .
         // . - .
         // . . *
-        diff = Math.min(max - col, row);
+        diff = Math.min(max - x, y);
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col: col + diff, row: row - diff })
+            ...getCapturedDisksUntil([ x + diff, y - diff ])
         );
 
         // . . .
         // . - .
         // . * .
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col, row: min })
+            ...getCapturedDisksUntil([ x, min ])
         );
 
         // . . .
         // . - .
         // * . .
-        diff = Math.min(col, row);
+        diff = Math.min(x, y);
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col: col - diff, row: row - diff })
+            ...getCapturedDisksUntil([ x - diff, y - diff ])
         );
 
         // . . .
         // * - .
         // . . .
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col: min, row })
+            ...getCapturedDisksUntil([ min, y ])
         );
 
         // * . .
         // . - .
         // . . .
-        diff = Math.min(col, max - row);
+        diff = Math.min(x, max - y);
         capturedDisks.push(
-            ...getCapturedDisksUntil({ col: col - diff, row: row + diff })
+            ...getCapturedDisksUntil([ x - diff, y + diff ])
         );
 
         return capturedDisks;
     }
 
     /**
-     * @param {{ col: number, row: number }
+     * @param {Array.<number>} coordinates
      * @param {string=} color
      * @return {{ isValid: boolean, errorMsg: string|undefined }}
      */
-    validateMove({ col, row }, color = this.onMove) {
+    validateMove(coordinates, color = this.onMove) {
         if (this.onMove !== color) {
             return { isValid: false, errorMsg: 'It\'s not your turn.' };
         }
 
         let fieldValue;
         try {
-            fieldValue = this.board.getField({ col, row });
+            fieldValue = this.board.getField(coordinates);
         } catch (e) {
             return { isValid: false, errorMsg: e.message };
         }
@@ -166,7 +166,7 @@ export default class Game {
             return { isValid: false, errorMsg: 'The cell is not empty.' };
         }
 
-        if (this.getCapturedDisks({ col, row }).length === 0) {
+        if (this.getCapturedDisks(coordinates).length === 0) {
             return { isValid: false, errorMsg: 'No captured disk.' };
         }
 
@@ -175,11 +175,11 @@ export default class Game {
 
     /**
      * @param {string=} color
-     * @return {Array.<{ col: number, row: number }>}
+     * @return {Array.<Array.<number>>}
      */
     getValidMoves(color = this.onMove) {
         return this.board.getEmptyFields().
-            filter((coordinates) =>
+            filter(coordinates =>
                 this.validateMove(coordinates, color).isValid
             );
     }
@@ -193,19 +193,19 @@ export default class Game {
     }
 
     /**
-     * @param {{ col: number, row: number }}
+     * @param {Array.<number>} coordinates
      * @param {string=} color
      * @throws {Error}
      * @return {Game}
      */
-    move({ col, row }, color = this.onMove) {
-        let { isValid, errorMsg } = this.validateMove({ col, row }, color);
+    move(coordinates, color = this.onMove) {
+        let { isValid, errorMsg } = this.validateMove(coordinates, color);
         if (!isValid) {
             throw new Error(`Invalid move! ${errorMsg}`);
         }
 
-        this.board.setField({ col, row }, color);
-        this.getCapturedDisks({ col, row }).forEach((oneField) =>
+        this.board.setField(coordinates, color);
+        this.getCapturedDisks(coordinates).forEach(oneField =>
             this.board.setField(oneField, color)
         );
 
@@ -213,7 +213,7 @@ export default class Game {
         do {
             this.onMove = getOppositeColor(this.onMove);
             switched += 1;
-        } while(switched < 3 && this.haveToPass());
+        } while (switched < 3 && this.haveToPass());
 
         if (switched === 3) {
             this.onMove = null;
