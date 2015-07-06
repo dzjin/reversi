@@ -18,7 +18,7 @@ export default class ReversiApp extends React.Component {
         this.state = {
             onMove: this.game.onMove,
             scores: this.game.scores,
-            disks: this.game.disks,
+            disks: this.game.board.data,
             lastMove: null,
             gameState: 'ready'
         };
@@ -45,7 +45,7 @@ export default class ReversiApp extends React.Component {
         this.setState({
             onMove: this.game.onMove,
             scores: this.game.scores,
-            disks: this.game.disks,
+            disks: this.game.board.data,
             lastMove: null,
             gameState: 'waiting'
         });
@@ -67,7 +67,7 @@ export default class ReversiApp extends React.Component {
             this.setState({
                 onMove: this.game.onMove,
                 scores: this.game.scores,
-                disks: this.game.disks,
+                disks: this.game.board.data,
                 lastMove: field,
                 gameState: 'ready'
             });

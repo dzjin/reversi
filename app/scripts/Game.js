@@ -40,13 +40,6 @@ export default class Game {
     }
 
     /**
-     * @return {Array.<Array.<*>>}
-     */
-    get disks() {
-        return this.board.data;
-    }
-
-    /**
      * @param {{ col: number, row: number }} from
      * @param {{ col: number, row: number }} to
      * @param {string=} color
