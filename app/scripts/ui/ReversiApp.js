@@ -51,28 +51,21 @@ export default class ReversiApp extends React.Component {
         });
 
         // for DEBUG
-        if (this.game.board.isFull()) { return; }
-        let tick = setInterval(() => {
-            let emptyFields = this.game.board.getEmptyFields();
+        let validMoves = this.game.getValidMoves();
+        if (validMoves.length === 0) { return; }
 
-            let index = Math.floor(Math.random() * emptyFields.length);
-            let field = emptyFields[ index ];
+        let index = Math.floor(Math.random() * validMoves.length);
+        let field = validMoves[index];
 
-            try {
-                this.game.move(field, Game.players[1]);
-            } catch (e) {
-                return;
-            }
+        this.game.move(field, Game.players[1]);
 
-            this.setState({
-                onMove: this.game.onMove,
-                scores: this.game.scores,
-                disks: this.game.board.data,
-                lastMove: field,
-                gameState: 'ready'
-            });
-            clearInterval(tick);
-        }, 100);
+        this.setState({
+            onMove: this.game.onMove,
+            scores: this.game.scores,
+            disks: this.game.board.data,
+            lastMove: field,
+            gameState: 'ready'
+        });
     }
 
     render() {

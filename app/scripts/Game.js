@@ -178,6 +178,17 @@ export default class Game {
     }
 
     /**
+     * @param {string=} color
+     * @return {Array.<{ col: number, row: number }>}
+     */
+    getValidMoves(color = this.onMove) {
+        return this.board.getEmptyFields().
+            filter((coordinates) =>
+                this.validateMove(coordinates, color).isValid
+            );
+    }
+
+    /**
      * @param {{ col: number, row: number }}
      * @param {string=} color
      * @throws {Error}
