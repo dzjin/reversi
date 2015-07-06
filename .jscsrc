@@ -54,7 +54,6 @@
   "requireDotNotation": true,
   "disallowYodaConditions": true,
   "validateJSDoc": {
-    "checkParamNames": true,
     "requireParamTypes": true
   },
   "excludeFiles": [ "node_modules/**", "bower_components/**", "**.min.js" ],

@@ -2,15 +2,6 @@
 
 import Board from './Board';
 
-/**
- * @param {string} color
- * @return {string}
- */
-let getOppositeColor = function(color) {
-    let [ first, second ] = Game.players;
-    return (color === first) ? second : first;
-};
-
 
 export default class Game {
     /**
@@ -211,7 +202,8 @@ export default class Game {
 
         let switched = 0;
         do {
-            this.onMove = getOppositeColor(this.onMove);
+            this.onMove = (this.onMove === Game.players[0]) ?
+                Game.players[1] : Game.players[0];
             switched += 1;
         } while (switched < 3 && this.haveToPass());
 
