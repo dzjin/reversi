@@ -151,26 +151,22 @@ export default class Game {
      * @return {{ isValid: boolean, errorMsg: string|undefined }}
      */
     validateMove({ col, row }, color = this.onMove) {
-        if (Game.players.indexOf(color) === -1) {
-            return { isValid: false, errorMsg: 'Invalid color.' };
-        }
-
         if (this.onMove !== color) {
             return { isValid: false, errorMsg: 'It\'s not your turn.' };
         }
 
-        let value;
+        let fieldValue;
         try {
-            value = this.board.getField({ col, row });
+            fieldValue = this.board.getField({ col, row });
         } catch (e) {
             return { isValid: false, errorMsg: e.message };
         }
 
-        if (value !== Board.EMPTY_FIELD) {
+        if (fieldValue !== Board.EMPTY_FIELD) {
             return { isValid: false, errorMsg: 'The cell is not empty.' };
         }
 
-        if (this.getCapturedDisks({ col, row }, color).length === 0) {
+        if (this.getCapturedDisks({ col, row }).length === 0) {
             return { isValid: false, errorMsg: 'No captured disk.' };
         }
 
@@ -189,6 +185,14 @@ export default class Game {
     }
 
     /**
+     * @param {string=} color
+     * @return {boolean}
+     */
+    haveToPass(color = this.onMove) {
+        return (this.getValidMoves(color).length === 0);
+    }
+
+    /**
      * @param {{ col: number, row: number }}
      * @param {string=} color
      * @throws {Error}
@@ -201,11 +205,19 @@ export default class Game {
         }
 
         this.board.setField({ col, row }, color);
-        this.getCapturedDisks({ col, row }, color).forEach((oneField) =>
+        this.getCapturedDisks({ col, row }).forEach((oneField) =>
             this.board.setField(oneField, color)
         );
 
-        this.onMove = getOppositeColor(color);
+        let switched = 0;
+        do {
+            this.onMove = getOppositeColor(this.onMove);
+            switched += 1;
+        } while(switched < 3 && this.haveToPass());
+
+        if (switched === 3) {
+            this.onMove = null;
+        }
 
         return this;
     }

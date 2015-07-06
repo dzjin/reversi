@@ -78,6 +78,7 @@ export default class Board {
     /**
      * @param {{ col: number, row: number }}
      * @param {*=} value
+     * @throws {Error}
      * @return {Board}
      */
     setField({ col, row }, value = Board.EMPTY_FIELD) {
@@ -99,6 +100,7 @@ export default class Board {
      * @param {{ col: number, row: number }} from
      * @param {{ col: number, row: number }} to
      * @param {*=} value
+     * @throws {Error}
      * @return {Board}
      */
     setFields(from, to, value = Board.EMPTY_FIELD) {
@@ -124,6 +126,7 @@ export default class Board {
     /**
      * @param {{ col: number, row: number }} from
      * @param {{ col: number, row: number }} to
+     * @throws {Error}
      * @return {Array.<{ col: number, row: number, value: * }>}
      */
     getFields(from, to) {

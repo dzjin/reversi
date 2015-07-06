@@ -23,6 +23,10 @@ export default class Score extends React.Component {
 }
 
 Score.propTypes = {
-    onMove: React.PropTypes.string.isRequired,
-    scores: React.PropTypes.object.isRequired
+    scores: React.PropTypes.object.isRequired,
+    onMove: React.PropTypes.string
+};
+
+Score.defaultProps = {
+    onMove: null
 };

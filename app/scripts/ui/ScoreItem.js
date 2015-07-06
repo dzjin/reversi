@@ -8,12 +8,12 @@ let DOM = React.DOM;
 
 export default class ScoreItem extends React.Component {
     render() {
-        let classes = [ this.props.color ];
+        let className = this.props.color;
         if (this.props.isOnMove) {
-            classes.push('on-move');
+            className += ' on-move';
         }
 
-        return DOM.div({ className: classes.join(' ') },
+        return DOM.div({ className },
             capitalize(this.props.color) + ': ' + this.props.score
         );
     }

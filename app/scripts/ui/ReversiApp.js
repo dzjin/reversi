@@ -31,7 +31,7 @@ export default class ReversiApp extends React.Component {
         if (this.state.gameState !== 'ready') { return; }
 
         try {
-            this.game.move({ col, row }, this.props.myColor);
+            this.game.move({ col, row });
         } catch (e) {
             this.setState({ gameState: 'error' });
 
@@ -46,25 +46,7 @@ export default class ReversiApp extends React.Component {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.board.data,
-            lastMove: null,
-            gameState: 'waiting'
-        });
-
-        // for DEBUG
-        let validMoves = this.game.getValidMoves();
-        if (validMoves.length === 0) { return; }
-
-        let index = Math.floor(Math.random() * validMoves.length);
-        let field = validMoves[index];
-
-        this.game.move(field, Game.players[1]);
-
-        this.setState({
-            onMove: this.game.onMove,
-            scores: this.game.scores,
-            disks: this.game.board.data,
-            lastMove: field,
-            gameState: 'ready'
+            lastMove: { col, row }
         });
     }
 
@@ -103,18 +85,8 @@ export default class ReversiApp extends React.Component {
             ),
             DOM.footer({ className: 'u-text-right' },
                 'Fork me on ',
-                DOM.a({ href: pkg.repository.url, target: '_blank' },
-                    'GitHub'
-                )
+                DOM.a({ href: pkg.repository.url, target: '_blank' }, 'GitHub')
             )
         );
     }
 }
-
-ReversiApp.propTypes = {
-    myColor: React.PropTypes.string
-};
-
-ReversiApp.defaultProps = {
-    myColor: Game.players[0]
-};
