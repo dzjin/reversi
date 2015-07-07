@@ -68,7 +68,7 @@ export default class ReversiApp extends React.Component {
 
         return DOM.div({ className: 'app', 'data-state': this.state.gameState },
             DOM.header({ className: 'row row--center' },
-                DOM.div({ className: 'col' }, ScoreElement),
+                DOM.div({ className: 'col col--1of3' }, ScoreElement),
                 DOM.div({ className: 'col u-text-right' },
                     DOM.h1(null, capitalize(pkg.name)),
                     DOM.small(null, pkg.description)
