@@ -13,20 +13,20 @@ export default class Score extends React.Component {
             React.createElement(ScoreItem, {
                 key: oneColor,
                 color: oneColor,
-                isOnMove: (this.props.onMove === oneColor),
+                isHighlighted: (this.props.highlighted === oneColor),
                 score: this.props.scores[oneColor]
             })
         );
 
-        return DOM.div({ id: 'score' }, scoreItems);
+        return DOM.div({ className: 'score' }, scoreItems);
     }
 }
 
 Score.propTypes = {
     scores: React.PropTypes.object.isRequired,
-    onMove: React.PropTypes.string
+    highlighted: React.PropTypes.string
 };
 
 Score.defaultProps = {
-    onMove: null
+    highlighted: null
 };

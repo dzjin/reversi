@@ -9,8 +9,8 @@ let DOM = React.DOM;
 export default class ScoreItem extends React.Component {
     render() {
         let className = this.props.color;
-        if (this.props.isOnMove) {
-            className += ' on-move';
+        if (this.props.isHighlighted) {
+            className += ' highlighted';
         }
 
         return DOM.div({ className },
@@ -21,11 +21,11 @@ export default class ScoreItem extends React.Component {
 
 ScoreItem.propTypes = {
     color: React.PropTypes.string.isRequired,
-    isOnMove: React.PropTypes.bool,
+    isHighlighted: React.PropTypes.bool,
     score: React.PropTypes.number
 };
 
 ScoreItem.defaultProps = {
-    isOnMove: false,
+    isHighlighted: false,
     scores: 0
 };

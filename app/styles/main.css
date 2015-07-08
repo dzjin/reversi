@@ -4,6 +4,10 @@
   min-height: 100vh;
 }
 
+.modal-content {
+  font-size: 140%;
+}
+
 main {
   flex: 1;
 }

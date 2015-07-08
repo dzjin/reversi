@@ -10,12 +10,12 @@ header small {
   display: none;
 }
 
-#score .light,
-#score .dark {
+.score .light,
+.score .dark {
   margin: .5em 0;
 }
 
-.on-move {
+.highlighted {
   text-decoration: underline;
 }
 
