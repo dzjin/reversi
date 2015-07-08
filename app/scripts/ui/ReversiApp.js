@@ -123,7 +123,7 @@ export default class ReversiApp extends React.Component {
             }
 
             return React.createElement(Modal,
-                { visible: this.state.isModalOpen },
+                { isVisible: this.state.isModalOpen },
                 DOM.h2(null, 'The game ended'),
                 this.getScoreElement(winner),
                 DOM.div({ className: 'controls' },

@@ -12,7 +12,7 @@ export default class Modal extends React.Component {
                 className: 'modal',
                 tabIndex: -1,
                 role: 'dialog',
-                hidden: !this.props.visible
+                hidden: !this.props.isVisible
             },
             DOM.div({ className: 'modal-content' }, this.props.children)
         );
