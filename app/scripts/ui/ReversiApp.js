@@ -70,13 +70,7 @@ export default class ReversiApp extends React.Component {
         let isEnded = (this.game.onMove === null);
         if (isEnded) {
             this.setState({ gameState: 'ended' });
-
-            let $lastMove = this.refs.boardContainer.
-                getDOMNode().
-                querySelector(`[data-cell-name="${cellName}"]`);
-            one($lastMove, 'transitionend', () =>
-                this.setState({ isModalOpen: true })
-            );
+            setTimeout(() => this.setState({ isModalOpen: true }), 300);
         }
     }
 
