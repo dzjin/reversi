@@ -114,7 +114,7 @@ export default class ReversiApp extends React.Component {
             let [ firstPlayer, secondPlayer ] = Game.players;
             let scores = this.game.scores;
             let winner;
-            if (scores[firstPlayer] > scores[secondPlayer] ) {
+            if (scores[firstPlayer] > scores[secondPlayer]) {
                 winner = firstPlayer;
             } else if (scores[firstPlayer] < scores[secondPlayer]) {
                 winner = secondPlayer;
