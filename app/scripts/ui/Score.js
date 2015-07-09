@@ -18,7 +18,7 @@ export default class Score extends React.Component {
             })
         );
 
-        return DOM.div({ className: 'score' }, scoreItems);
+        return DOM.div({ className: 'scores' }, scoreItems);
     }
 }
 

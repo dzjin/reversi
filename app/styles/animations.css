@@ -1,0 +1,31 @@
+[data-cell-value]:before,
+[data-cell-value]:after {
+  transition: transform .6s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+[data-state="error"] .react-board-container {
+  animation-name: swing;
+  animation-duration: .3s;
+}
+
+@keyframes swing {
+  20% {
+    transform: rotate3d(0, 0, 1, 2deg);
+  }
+
+  40% {
+    transform: rotate3d(0, 0, 1, -2deg);
+  }
+
+  60% {
+    transform: rotate3d(0, 0, 1, 1deg);
+  }
+
+  80% {
+    transform: rotate3d(0, 0, 1, -1deg);
+  }
+
+  100% {
+    transform: rotate3d(0, 0, 1, 0);
+  }
+}

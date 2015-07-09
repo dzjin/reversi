@@ -1,43 +1,103 @@
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+/* Header */
+header {
+  padding: .5em 1em;
 }
 
-.modal-content {
-  font-size: 140%;
+@media (min-width: 768px) {
+  header {
+    padding: 1em;
+  }
 }
 
-main {
-  flex: 1 0 auto;
+header h1 {
+  margin: 0;
 }
 
-footer {
-  padding: 1em;
+.scores > * {
+  margin: .5em 0;
 }
 
-.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.light {
+.scores .light {
   color: #ddd;
 }
-.dark {
+
+.scores .dark {
   color: #666;
 }
 
-/* from http://www.mademyday.de/css-height-equals-width-with-pure-css.html */
-.ratio-1by1 {
+.scores .highlighted {
+  text-decoration: underline;
+}
+
+
+/* Main */
+.react-board-container {
+  max-width: 75vh;
+  width: calc(100vw - 2em);
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+}
+
+.react-board {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.react-board-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 0 100%;
+}
+
+/* cells */
+.react-board-cell {
+  flex: 1;
   position: relative;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
-.ratio-1by1:before {
+
+.react-board-highlighted {
+  background-color: #98d4f7;
+}
+
+/* empty cell */
+[data-cell-value=""]:hover {
+  background-color: #fcfcfc;
+}
+
+/* disks */
+[data-cell-value]:before,
+[data-cell-value]:after {
   content: '';
-  display: block;
-  padding-top: 100%;
-}
-.ratio-1by1>* {
   position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 5%; right: 5%; bottom: 5%; left: 5%;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  backface-visibility: hidden;
+  transform: rotateX(180deg);
+}
+
+/* light disk */
+[data-cell-value]:before {
+  background-color: #ddd;
+  border-color: #666;
+}
+[data-cell-value="light"]:before {
+  transform: rotateX(0);
+}
+
+/* dark disk */
+[data-cell-value]:after {
+  background-color: #666;
+  border-color: #ddd;
+}
+[data-cell-value="dark"]:after {
+  transform: rotateX(0);
+}
+
+
+/* Footer */
+footer {
+  padding: 1em;
 }

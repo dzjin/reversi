@@ -102,7 +102,7 @@ export default class ReversiApp extends React.Component {
     /**
      * @return {ReactElement}
      */
-    getModal() {
+    getModalElement() {
         switch (this.state.gameState) {
         case 'ended':
             let [ firstPlayer, secondPlayer ] = Game.players;
@@ -143,15 +143,17 @@ export default class ReversiApp extends React.Component {
      * @return {ReactElement}
      */
     render() {
-        return DOM.div({ className: 'app', 'data-state': this.state.gameState },
+        return DOM.div(
+            { className: 'stretch-height-container',
+                'data-state': this.state.gameState },
             DOM.header({ className: 'row row--center' },
                 DOM.div({ className: 'col col--1of3' }, this.getScoreElement()),
                 DOM.div({ className: 'col u-text-right' },
                     DOM.h1(null, capitalize(pkg.name)),
-                    DOM.small(null, pkg.description)
+                    DOM.small({ className: 'u-hidden-xs' }, pkg.description)
                 )
             ),
-            DOM.main({ className: 'container' },
+            DOM.main({ className: 'container stretch-height' },
                 DOM.div(
                     { className: 'ratio-1by1 center react-board-container',
                         ref: 'boardContainer' },
@@ -162,7 +164,7 @@ export default class ReversiApp extends React.Component {
                 'Fork me on ',
                 DOM.a({ href: pkg.repository.url, target: '_blank' }, 'GitHub')
             ),
-            this.getModal()
+            this.getModalElement()
         );
     }
 }

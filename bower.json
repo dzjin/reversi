@@ -7,6 +7,6 @@
   "description": "Strategy board game for two players",
   "license": "MIT",
   "dependencies": {
-    "base.less": "git://github.com/loonkwil/base.less.git#^0.4.0"
+    "base.less": "git://github.com/loonkwil/base.less.git#^0.5.0"
   }
 }

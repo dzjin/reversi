@@ -4,9 +4,9 @@
 /*jshint unused:false */
 import normalize from 'normalize-css/normalize.css';
 import base from 'base.less/dist/css/base.css';
+import board from '../styles/utils.css';
+import header from '../styles/animations.css';
 import main from '../styles/main.css';
-import header from '../styles/header.css';
-import board from '../styles/board.css';
 
 // JS
 import polyfill from 'babel/polyfill';
