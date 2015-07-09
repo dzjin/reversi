@@ -52,8 +52,8 @@ export default class Board {
      */
     areCoordinatesValid([ x, y ]) {
         return (
-            x >= 0 && y < this.size &&
-            x >= 0 && y < this.size
+            x >= 0 && x < this.size &&
+            y >= 0 && y < this.size
         );
     }
 

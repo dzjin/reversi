@@ -62,7 +62,7 @@ export default class ReversiApp extends React.Component {
     /**
      * @param {{ col: number, row: number, cellName: string, cellValue: * }} d
      */
-    clickHandler({ col, row, cellName }) {
+    clickHandler({ col, row }) {
         if (this.state.gameState !== 'ready') { return; }
 
         this.move([ col, row ]);

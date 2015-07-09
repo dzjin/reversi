@@ -35,13 +35,14 @@
   },
   "devDependencies": {
     "del": "^1.2.0",
+    "gulp-bump": "^0.3.0",
     "gulp-csslint": "^0.1.0",
     "gulp-git": "^1.2.0",
-    "gulp-bump": "^0.3.0",
     "gulp-htmlhint": "^0.1.0",
     "gulp-jscs": "^1.6.0",
     "gulp-jshint": "^1.11.0",
     "gulp-jsonlint": "^1.0.0",
-    "gulp-minify-html": "^1.0.0"
+    "gulp-minify-html": "^1.0.0",
+    "gulp-mocha": "^2.1.2"
   }
 }

@@ -146,10 +146,11 @@ gulp.task('bump-tag', (cb) => {
 
 // Task for testing and linting
 // Usage: `gulp test` or `npm test`
-gulp.task('test', [ 'lint' ]);
+gulp.task('test', [ 'lint', 'mocha' ]);
 
-gulp.task('qunit', () =>
-    gulp.src(config.path.test + '/index.html').pipe(plugins.qunit())
+gulp.task('mocha', () =>
+    gulp.src(config.path.test + '/*', { read: false }).
+        pipe(plugins.mocha({ reporter: 'nyan' }))
 );
 
 gulp.task('lint', [ 'jscs', 'jshint', 'jsonlint', 'csslint', 'htmllint' ]);

@@ -8,14 +8,16 @@ var config = {};
 // Don't use leading or trailing slashes!
 config.path = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    test: 'test'
 };
 
 // Files for linting and stuff like that
 config.filesForAnalyze = {
     js: [
         'gulpconfig.js', 'gulpfile.babel.js',
-        config.path.app + '/scripts/**/*.js',
+        config.path.test + '/**/*.js',
+        config.path.app + '/scripts/**/*.js'
     ],
     json: [ '*.json', '.*rc' ],
     css: [ config.path.app + '/styles/**/*.css' ],
