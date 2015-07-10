@@ -15,6 +15,11 @@ export default class ReversiApp extends React.Component {
     constructor(props) {
         super(props);
 
+        this.clickHandler = this.clickHandler.bind(this);
+        this.restartRequestHandler = this.restartRequestHandler.bind(this);
+        this.modalCloseRequestHandler = this.modalCloseRequestHandler.
+            bind(this);
+
         this.game = new Game();
         this.state = {
             onMove: this.game.onMove,
@@ -95,7 +100,7 @@ export default class ReversiApp extends React.Component {
             size: this.game.board.size,
             values: this.state.disks,
             highlight,
-            clickHandler: this.clickHandler.bind(this)
+            clickHandler: this.clickHandler
         });
     }
 
@@ -123,13 +128,13 @@ export default class ReversiApp extends React.Component {
                 DOM.div({ className: 'controls' },
                     DOM.a(
                         { className: 'btn btn--primary',
-                            onClick: this.restartRequestHandler.bind(this) },
+                            onClick: this.restartRequestHandler },
                         'restart'
                     ),
                     ' ',
                     DOM.a(
                         { className: 'btn',
-                            onClick: this.modalCloseRequestHandler.bind(this) },
+                            onClick: this.modalCloseRequestHandler },
                         'close'
                     )
                 )
