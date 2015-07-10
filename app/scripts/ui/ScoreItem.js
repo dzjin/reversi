@@ -27,5 +27,5 @@ ScoreItem.propTypes = {
 
 ScoreItem.defaultProps = {
     isHighlighted: false,
-    scores: 0
+    score: 0
 };
