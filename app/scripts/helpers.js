@@ -19,6 +19,13 @@ export let on = (node, eventName, fn) =>
     node.addEventListener(eventName, fn, false);
 
 /**
+ * Execute a function when the DOM is ready
+ * @param {function(Event)} fn
+ */
+export let ready = (fn) =>
+    on(document, 'DOMContentLoaded', fn);
+
+/**
  * @param {HTMLElement} node
  * @param {string} eventName
  * @param {function} fn

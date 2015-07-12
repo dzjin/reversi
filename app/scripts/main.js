@@ -11,8 +11,10 @@ import main from '../styles/main.css';
 // JS
 import polyfill from 'babel/polyfill';
 
+import { ready } from './helpers';
+import FastClick from 'FastClick';
+ready(() => FastClick.attach(document.body));
+
 import React from 'react';
 import ReversiApp from './ui/ReversiApp';
-
-
 React.render(React.createElement(ReversiApp), document.body);
