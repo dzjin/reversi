@@ -58,12 +58,15 @@ header h1 {
 }
 
 .react-board-highlighted {
-  background-color: #98d4f7;
+  background-color: #e1f2fc;
 }
 
 /* empty cell */
 [data-cell-value=""]:hover {
   background-color: #fcfcfc;
+}
+[data-cell-value=""].react-board-highlighted:hover {
+  background-color: #f6fbfd;
 }
 
 /* disks */

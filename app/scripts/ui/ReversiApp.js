@@ -21,13 +21,16 @@ export default class ReversiApp extends React.Component {
             bind(this);
 
         this.game = new Game();
+        this.invalidMoves = 0;
+
         this.state = {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.board.data,
             lastMove: null,
             gameState: 'ready',
-            isModalOpen: false
+            isModalOpen: false,
+            invalidMoves: 0
         };
     }
 
@@ -51,7 +54,10 @@ export default class ReversiApp extends React.Component {
 
             let $boardContainer = this.refs.boardContainer.getDOMNode();
             one($boardContainer, 'animationend', () =>
-                this.setState({ gameState: 'ready' })
+                this.setState({
+                    gameState: 'ready',
+                    invalidMoves: this.state.invalidMoves + 1
+                })
             );
             return;
         }
@@ -60,6 +66,7 @@ export default class ReversiApp extends React.Component {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.board.data,
+            invalidMoves: 0,
             lastMove: coordinates
         });
     }
@@ -94,7 +101,12 @@ export default class ReversiApp extends React.Component {
      * @return {ReactElement}
      */
     getReactBoardElement() {
-        let highlight = (this.state.lastMove) ? [ this.state.lastMove ] : [];
+        let highlight;
+        if (this.state.invalidMoves > 2) {
+            highlight = this.game.getValidMoves();
+        } else if (this.state.lastMove !== null) {
+            highlight = [ this.state.lastMove ];
+        }
 
         return React.createElement(ReactBoard, {
             size: this.game.board.size,
