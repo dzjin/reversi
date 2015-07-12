@@ -178,7 +178,11 @@ export default class ReversiApp extends React.Component {
                 )
             ),
             DOM.footer({ className: 'u-text-right' },
-                'Fork me on ',
+                DOM.a({ href: 'https://en.wikipedia.org/wiki/Reversi#Rules',
+                    target: '_blank' },
+                    'Rules'
+                ),
+                ', ',
                 DOM.a({ href: pkg.repository.url, target: '_blank' }, 'GitHub')
             ),
             this.getModalElement()
