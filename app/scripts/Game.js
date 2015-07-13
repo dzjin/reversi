@@ -215,4 +215,4 @@ export default class Game {
     }
 }
 
-Game.players = [ 'light', 'dark' ];
+Game.players = [ 'dark', 'light' ];
