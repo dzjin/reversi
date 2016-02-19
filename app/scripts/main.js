@@ -12,7 +12,7 @@ import main from '../styles/main.css';
 import polyfill from 'babel/polyfill';
 
 import { ready } from './helpers';
-import FastClick from 'FastClick';
+import FastClick from 'fastclick';
 ready(() => FastClick.attach(document.body));
 
 import React from 'react';
