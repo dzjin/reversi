@@ -6,21 +6,19 @@ import ScoreItem from './ScoreItem';
 let DOM = React.DOM;
 
 
-export default class Score extends React.Component {
-    render() {
-        let colors = Object.getOwnPropertyNames(this.props.scores);
-        let scoreItems = colors.map(oneColor =>
-            React.createElement(ScoreItem, {
-                key: oneColor,
-                color: oneColor,
-                isHighlighted: (this.props.highlighted === oneColor),
-                score: this.props.scores[oneColor]
-            })
-        );
+const Score = function({ scores, highlighted }) {
+    let colors = Object.getOwnPropertyNames(scores);
+    let scoreItems = colors.map(oneColor =>
+        React.createElement(ScoreItem, {
+            key: oneColor,
+            color: oneColor,
+            isHighlighted: (highlighted === oneColor),
+            score: scores[oneColor]
+        })
+    );
 
-        return DOM.div({ className: 'scores' }, scoreItems);
-    }
-}
+    return DOM.div({ className: 'scores' }, scoreItems);
+};
 
 Score.propTypes = {
     scores: React.PropTypes.object.isRequired,
@@ -30,3 +28,5 @@ Score.propTypes = {
 Score.defaultProps = {
     highlighted: null
 };
+
+export default Score;

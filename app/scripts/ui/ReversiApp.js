@@ -3,7 +3,7 @@
 import React from 'react';
 import Score from './Score';
 import Modal from './Modal';
-import ReactBoard from 'ReactBoard';
+import ReactBoard from 'react-board';
 import { capitalize, one } from '../helpers';
 import Game from '../Game';
 import pkg from '../../../package.json';
@@ -21,9 +21,11 @@ export default class ReversiApp extends React.Component {
             bind(this);
 
         this.game = new Game();
-        this.invalidMoves = 0;
+        this.state = this.getFirstState();
+    }
 
-        this.state = {
+    getFirstState(game) {
+        return {
             onMove: this.game.onMove,
             scores: this.game.scores,
             disks: this.game.board.data,
@@ -39,8 +41,8 @@ export default class ReversiApp extends React.Component {
     }
 
     restartRequestHandler() {
-        this.constructor(this.props);
-        this.forceUpdate();
+        this.game = new Game();
+        this.setState(this.getFirstState());
     }
 
     /**
@@ -52,7 +54,7 @@ export default class ReversiApp extends React.Component {
         } catch (e) {
             this.setState({ gameState: 'error' });
 
-            let $boardContainer = this.refs.boardContainer.getDOMNode();
+            let $boardContainer = this.refs.boardContainer;
             one($boardContainer, 'animationend', () =>
                 this.setState({
                     gameState: 'ready',

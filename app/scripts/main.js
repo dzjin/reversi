@@ -16,5 +16,7 @@ import FastClick from 'fastclick';
 ready(() => FastClick.attach(document.body));
 
 import React from 'react';
+import ReactDOM from 'react-dom';
+
 import ReversiApp from './ui/ReversiApp';
-React.render(React.createElement(ReversiApp), document.body);
+ReactDOM.render(React.createElement(ReversiApp), document.body);

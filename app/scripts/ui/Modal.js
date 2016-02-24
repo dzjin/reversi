@@ -5,19 +5,17 @@ import React from 'react';
 let DOM = React.DOM;
 
 
-export default class Modal extends React.Component {
-    render() {
-        return DOM.div(
-            {
-                className: 'modal',
-                tabIndex: -1,
-                role: 'dialog',
-                hidden: !this.props.isVisible
-            },
-            DOM.div({ className: 'modal-content' }, this.props.children)
-        );
-    }
-}
+const Modal = function({ isVisible, children }) {
+    return DOM.div(
+        {
+            className: 'modal',
+            tabIndex: -1,
+            role: 'dialog',
+            hidden: !isVisible
+        },
+        DOM.div({ className: 'modal-content' }, children)
+    );
+};
 
 Modal.propTypes = {
     isVisible: React.PropTypes.bool
@@ -26,3 +24,5 @@ Modal.propTypes = {
 Modal.defaultProps = {
     isVisible: false
 };
+
+export default Modal;

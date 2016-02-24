@@ -6,18 +6,14 @@ import { capitalize } from '../helpers';
 let DOM = React.DOM;
 
 
-export default class ScoreItem extends React.Component {
-    render() {
-        let className = this.props.color;
-        if (this.props.isHighlighted) {
-            className += ' highlighted';
-        }
-
-        return DOM.div({ className },
-            capitalize(this.props.color) + ': ' + this.props.score
-        );
+const ScoreItem = function({ color, isHighlighted, score }) {
+    let className = color;
+    if (isHighlighted) {
+        className += ' highlighted';
     }
-}
+
+    return DOM.div({ className }, capitalize(color) + ': ' + score);
+};
 
 ScoreItem.propTypes = {
     color: React.PropTypes.string.isRequired,
@@ -29,3 +25,5 @@ ScoreItem.defaultProps = {
     isHighlighted: false,
     score: 0
 };
+
+export default ScoreItem;
