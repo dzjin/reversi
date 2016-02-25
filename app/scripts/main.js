@@ -9,7 +9,7 @@ import header from '../styles/animations.css';
 import main from '../styles/main.css';
 
 // JS
-import polyfill from 'babel/polyfill';
+import polyfill from 'babel-polyfill';
 
 import { ready } from './helpers';
 import FastClick from 'fastclick';
