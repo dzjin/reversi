@@ -1,6 +1,8 @@
 /*global describe, it, beforeEach */
 'use strict';
 
+import 'babel-polyfill';
+
 import assert from 'assert';
 import Board from '../app/scripts/Board';
 import Game from '../app/scripts/Game';

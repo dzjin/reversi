@@ -156,7 +156,9 @@ gulp.task('mocha', () =>
 gulp.task('lint', [ 'jscs', 'jshint', 'jsonlint', 'csslint', 'htmllint' ]);
 
 gulp.task('jscs', () =>
-    gulp.src(config.filesForAnalyze.js).pipe(plugins.jscs())
+    gulp.src(config.filesForAnalyze.js).
+        pipe(plugins.jscs()).
+        pipe(plugins.jscs.reporter())
 );
 
 gulp.task('jshint', () =>
@@ -220,8 +222,8 @@ gulp.task('webpack-build', (cb) => {
     });
 });
 
-gulp.task('cleanup', (cb) =>
-    del(config.path.dist, cb)
+gulp.task('cleanup', () =>
+    del(config.path.dist)
 );
 
 gulp.task('copy-html', () =>

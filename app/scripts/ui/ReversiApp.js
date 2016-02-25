@@ -24,7 +24,7 @@ export default class ReversiApp extends React.Component {
         this.state = this.getFirstState();
     }
 
-    getFirstState(game) {
+    getFirstState() {
         return {
             onMove: this.game.onMove,
             scores: this.game.scores,
@@ -119,7 +119,7 @@ export default class ReversiApp extends React.Component {
     }
 
     /**
-     * @return {ReactElement}
+     * @return {?ReactElement}
      */
     getModalElement() {
         switch (this.state.gameState) {
