@@ -22,7 +22,7 @@ Run the linting (jscs, jshint, jsonlint, csslint, htmllint) scripts:
 ### Release
 
 Bumping the version number and creating a release commit, use the
-`gulp bump [--version <version>|-r <version>]` task.
+`gulp bump [--version <version>|-v <version>]` task.
 
 Version could be: major (1.0.0), minor (0.1.0), patch (0.0.2) (this one is the
 default), or a specific version number like: 1.2.3 or 1.0.0-alpha
