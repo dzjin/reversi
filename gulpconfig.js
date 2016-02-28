@@ -1,6 +1,7 @@
 'use strict';
 
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
 
 var config = {};
 
@@ -75,7 +76,7 @@ config.plugins = {
                     loaders: [
                         'style-loader',
                         'css-loader',
-                        'autoprefixer-loader?browsers=last 2 version'
+                        'postcss-loader'
                     ]
                 }, {
                     test: /\.(png|jpg|svg)$/,
@@ -85,6 +86,9 @@ config.plugins = {
                     loaders: [ 'json' ]
                 }
             ]
+        },
+        postcss: function() {
+            return [ autoprefixer({ browsers: [ 'last 2 versions' ] }) ];
         }
     }
 };
