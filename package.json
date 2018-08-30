@@ -1,5 +1,5 @@
 {
-  "name": "reversi",
+  "name": "notversi",
   "version": "0.2.0",
   "authors": [
     "Peter Simon <simonpepe@gmail.com>"
@@ -15,9 +15,10 @@
     "start": "gulp"
   },
   "dependencies": {
+    "fastclick": "^1.0.6",
     "react": "~0.14.0",
-    "react-dom": "~0.14.0",
-    "react-board": "^1.0.0"
+    "react-board": "^1.0.0",
+    "react-dom": "~0.14.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.3",

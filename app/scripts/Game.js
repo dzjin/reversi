@@ -7,17 +7,24 @@ export default class Game {
     /**
      * @param {number=} size
      */
-    constructor(size = 8) {
-        let [ firstPlayer, secondPlayer ] = Game.players;
+    constructor(size = 9) {
+        let [firstPlayer, secondPlayer] = Game.players;
 
         this.onMove = firstPlayer;
 
-        let center = Math.floor((size - 1) / 2);
-        this.board = (new Board(size)).
-            setField([ center, center ], firstPlayer).
-            setField([ center + 1, center ], secondPlayer).
-            setField([ center, center + 1 ], secondPlayer).
-            setField([ center + 1, center + 1 ], firstPlayer);
+        this.board = new Board(size);
+
+        // Set the two rows
+        [0,].forEach(r => {
+            for (let i = 0; i < size; i++) {
+                this.board.setField([r, i], firstPlayer);
+            }
+        });
+        [8].forEach(r => {
+            for (let i = 0; i < size; i++) {
+                this.board.setField([r, i], secondPlayer);
+            }
+        });
     }
 
     /**
@@ -37,17 +44,18 @@ export default class Game {
      * @return {Array.<Array.<number>>}
      */
     getCapturedDisksFromOneRange(from, to, color = this.onMove) {
+        console.log('ARGS', arguments);
         let capturedDisks = [];
 
         let disks = this.board.getFields(from, to).slice(1);
         for (let { coordinates, value } of disks) {
             switch (value) {
-            case Board.EMPTY_FIELD:
-                return [];
-            case color:
-                return capturedDisks;
-            default: // opposite color
-                capturedDisks.push(coordinates);
+                case Board.EMPTY_FIELD:
+                    return [];
+                case color:
+                    return capturedDisks;
+                default: // opposite color
+                    capturedDisks.push(coordinates);
             }
         }
 
@@ -59,81 +67,64 @@ export default class Game {
      * @param {string=} color
      * @return {Array.<Array.<number>>}
      */
-    getCapturedDisks([ x, y ], color = this.onMove) {
+    getCapturedDisks([x, y], color = this.onMove) {
+        console.log('Args', arguments)
         let capturedDisks = [];
 
-        /**
-         * @param {Array.<number>} to
-         * @return {Array.<Array.<number>>}
-         */
-        let getCapturedDisksUntil = to =>
-            this.getCapturedDisksFromOneRange([ x, y ], to, color);
+        const coordinatesToCheck = [
+            [x + 2, y],
+            [x, y + 2],
+            [x - 2, y],
+            [x, y - 2],
+        ];
+        const normalCells = coordinatesToCheck.filter(coord => {
+            return coord[0] >= 0 && coord[0] < this.board.size && coord[1] > 0 && coord[1] < this.board.size;
+        });
+        normalCells.forEach(coord => {
+            capturedDisks.push(...this.getCapturedDisksFromOneRange([x, y], coord))
+        });
 
-        let max = this.board.size - 1;
-        let min = 0;
-        let diff;
+        console.log('hello')
 
-        // . * .
-        // . - .
-        // . . .
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ x, max ])
-        );
+        const nearBy = this.getNearbyCells([x, y]).filter(r => {
+            return r[0] == 0 && r[1] == 0
+                || r[0] == 0 && r[1] == this.board.size - 1
+                || r[0] == this.board.size - 1 && r[1] == 0
+                || r[0] == this.board.size - 1 && r[1] == this.board.size - 1;
+        });
 
-        // . . *
-        // . - .
-        // . . .
-        diff = Math.min(max - x, max - y);
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ x + diff, y + diff ])
-        );
+        console.log('hello!', nearBy)
+        // Are any corner pieces targeted?
 
-        // . . .
-        // . - *
-        // . . .
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ max, y ])
-        );
-
-        // . . .
-        // . - .
-        // . . *
-        diff = Math.min(max - x, y);
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ x + diff, y - diff ])
-        );
-
-        // . . .
-        // . - .
-        // . * .
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ x, min ])
-        );
-
-        // . . .
-        // . - .
-        // * . .
-        diff = Math.min(x, y);
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ x - diff, y - diff ])
-        );
-
-        // . . .
-        // * - .
-        // . . .
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ min, y ])
-        );
-
-        // * . .
-        // . - .
-        // . . .
-        diff = Math.min(x, max - y);
-        capturedDisks.push(
-            ...getCapturedDisksUntil([ x - diff, y + diff ])
-        );
-
+        nearBy.forEach(cell => {
+            const nearByBy = this.getNearbyCells(cell).filter(coord => {
+                return coord[0] >= 0 && coord[0] < this.board.size && coord[1] > 0 && coord[1] < this.board.size;
+            });
+            let count = 0;
+            nearByBy.forEach(r => {
+                const val = this.board.getField(r);
+                console.log('VALUE OF THE SURROUNDING CELL', r, val);
+                if (val === this.onMove) {
+                    count += 1;
+                }
+            })
+            console.log('COUNT', count, this.onMove);
+            if (count == 2) {
+                capturedDisks.push(cell);
+            }
+        });
+        console.log('captured disks', capturedDisks);
         return capturedDisks;
+    }
+
+    getNearbyCells([x, y]) {
+        const nearBy = [
+            [x + 1, y],
+            [x, y + 1],
+            [x - 1, y],
+            [x, y - 1],
+        ];
+        return nearBy;
     }
 
     /**
@@ -141,7 +132,7 @@ export default class Game {
      * @param {string=} color
      * @return {{ isValid: boolean, errorMsg: string|undefined }}
      */
-    validateMove(coordinates, color = this.onMove) {
+    validateMove(selectedCoords, coordinates, color = this.onMove) {
         if (this.onMove !== color) {
             return { isValid: false, errorMsg: 'It\'s not your turn.' };
         }
@@ -149,18 +140,51 @@ export default class Game {
         let fieldValue;
         try {
             fieldValue = this.board.getField(coordinates);
+            if (fieldValue != null) {
+                return { isValid: false };
+            }
         } catch (e) {
             return { isValid: false, errorMsg: e.message };
         }
 
-        if (fieldValue !== Board.EMPTY_FIELD) {
-            return { isValid: false, errorMsg: 'The cell is not empty.' };
+        let movement;
+        if (selectedCoords[1] == coordinates[1]) {
+            movement = 'horizontal';
         }
-
-        if (this.getCapturedDisks(coordinates).length === 0) {
-            return { isValid: false, errorMsg: 'No captured disk.' };
+        if (selectedCoords[0] == coordinates[0]) {
+            movement = 'vertical';
         }
+        if (!movement) return { isValid: false };
 
+        // const empty = this.board.getEmptyFields();
+
+        // console.log('EMPTY', empty)
+
+        // idea
+        // if the entire path exists, then we good
+        if (movement == 'horizontal') {
+            // const possibleHorizontal = empty.filter(r => r[1] == selectedCoords[1]);
+            let min = Math.min(selectedCoords[0], coordinates[0]);
+            let max = Math.max(selectedCoords[0], coordinates[0]);
+
+            // console.log('Min, max', min, max);
+            for (let i = min + 1; i < max; i++) {
+                const taken = this.board.getField([i, coordinates[1]]);
+                if (taken) {
+                    return { isValid: false };
+                }
+            }
+        }
+        if (movement == 'vertical') {
+            let min = Math.min(selectedCoords[1], coordinates[1]);
+            let max = Math.max(selectedCoords[1], coordinates[1]);
+            for (let i = min + 1; i < max; i++) {
+                const taken = this.board.getField([coordinates[0], i]);
+                if (taken) {
+                    return { isValid: false };
+                }
+            }
+        }
         return { isValid: true };
     }
 
@@ -168,10 +192,10 @@ export default class Game {
      * @param {string=} color
      * @return {Array.<Array.<number>>}
      */
-    getValidMoves(color = this.onMove) {
+    getValidMoves(selectedCoords, color = this.onMove) {
         return this.board.getEmptyFields().
             filter(coordinates =>
-                this.validateMove(coordinates, color).isValid
+                this.validateMove(selectedCoords, coordinates, color).isValid
             );
     }
 
@@ -179,9 +203,9 @@ export default class Game {
      * @param {string=} color
      * @return {boolean}
      */
-    haveToPass(color = this.onMove) {
-        return (this.getValidMoves(color).length === 0);
-    }
+    // haveToPass(color = this.onMove) {
+    //     return (this.getValidMoves(color).length === 0);
+    // }
 
     /**
      * @param {Array.<number>} coordinates
@@ -189,30 +213,38 @@ export default class Game {
      * @throws {Error}
      * @return {Game}
      */
-    move(coordinates, color = this.onMove) {
-        let { isValid, errorMsg } = this.validateMove(coordinates, color);
+    move(from, coordinates, color = this.onMove) {
+        let { isValid, errorMsg } = this.validateMove(from, coordinates, color);
+        console.log(' get to here', isValid);
         if (!isValid) {
             throw new Error(`Invalid move! ${errorMsg}`);
         }
 
+        this.board.setField(from, Board.EMPTY_FIELD);
         this.board.setField(coordinates, color);
-        this.getCapturedDisks(coordinates).forEach(oneField =>
-            this.board.setField(oneField, color)
-        );
+        console.log('checkpt 1')
+        this.getCapturedDisks(coordinates).forEach(oneField => {
+            console.log('SETTING FIELD', oneField);
+            this.board.setField(oneField, Board.EMPTY_FIELD)
+        });
+        console.log('checkpt 2')
 
-        let switched = 0;
-        do {
-            this.onMove = (this.onMove === Game.players[0]) ?
-                Game.players[1] : Game.players[0];
-            switched += 1;
-        } while (switched < 3 && this.haveToPass());
 
-        if (switched === 3) {
-            this.onMove = null;
-        }
+        // let switched = 0;
+        // do {
+        this.onMove = (this.onMove === Game.players[0]) ?
+            Game.players[1] : Game.players[0];
+
+        //     console.log('ON MOVE', this.onMove);
+        //     switched += 1;
+        // } while (switched < 3 && this.haveToPass());
+
+        // if (switched === 3) {
+        //     this.onMove = null;
+        // }
 
         return this;
     }
 }
 
-Game.players = [ 'dark', 'light' ];
+Game.players = ['dark', 'light'];

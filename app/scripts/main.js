@@ -1,8 +1,8 @@
 'use strict';
 
 // CSS
-import 'normalize-css/normalize.css';
-import 'base.less/dist/css/base.css';
+// import 'normalize-css/normalize.css';
+// import 'base.less/dist/css/base.css';
 import '../styles/utils.css';
 import '../styles/animations.css';
 import '../styles/main.css';

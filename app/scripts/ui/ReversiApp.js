@@ -30,9 +30,10 @@ export default class ReversiApp extends React.Component {
             scores: this.game.scores,
             disks: this.game.board.data,
             lastMove: null,
-            gameState: 'ready',
+            gameState: 'ready', // 'selected' for after selecting an item
             isModalOpen: false,
             invalidMoves: 0
+            // selectedCell: [row, col] after selecting one
         };
     }
 
@@ -48,9 +49,9 @@ export default class ReversiApp extends React.Component {
     /**
      * @param {Array.<number>} coordinates
      */
-    move(coordinates) {
+    move(from, coordinates) {
         try {
-            this.game.move(coordinates);
+            this.game.move(from, coordinates);
         } catch (e) {
             this.setState({ gameState: 'error' });
 
@@ -79,12 +80,32 @@ export default class ReversiApp extends React.Component {
     clickHandler({ col, row }) {
         if (this.state.gameState !== 'ready') { return; }
 
-        this.move([ col, row ]);
+        const selected = this.state.selected;
+        const clickedCell = this.game.board.getField([col, row]);
 
-        let isEnded = (this.game.onMove === null);
-        if (isEnded) {
-            this.setState({ gameState: 'ended' });
-            setTimeout(() => this.setState({ isModalOpen: true }), 300);
+        console.log('??');
+        if (selected == null) {
+            console.log('next persons turn');
+            if (clickedCell === this.game.onMove) {
+                this.setState({
+                    selected: [col, row]
+                });
+            }
+            return;
+        }
+        if (selected != null) {
+            this.move(this.state.selected, [col, row]);
+
+            this.setState({
+                selected: null,
+            });
+
+            // let isEnded = (this.game.onMove === null);
+
+            // if (isEnded) {
+            //     this.setState({ gameState: 'ended' });
+            //     setTimeout(() => this.setState({ isModalOpen: true }), 300);
+            // }
         }
     }
 
@@ -103,12 +124,12 @@ export default class ReversiApp extends React.Component {
      * @return {ReactElement}
      */
     getReactBoardElement() {
-        let highlight;
-        if (this.state.invalidMoves > 2) {
-            highlight = this.game.getValidMoves();
-        } else if (this.state.lastMove !== null) {
-            highlight = [ this.state.lastMove ];
-        }
+        let highlight = this.state.selected && this.state.selected.length == 2 ? this.game.getValidMoves(this.state.selected) : [];
+        // if (this.state.invalidMoves > 2) {
+        //     highlight = this.game.getValidMoves();
+        // } else if (this.state.lastMove !== null) {
+        //     highlight = [this.state.lastMove];
+        // }
 
         return React.createElement(ReactBoard, {
             size: this.game.board.size,
@@ -117,44 +138,53 @@ export default class ReversiApp extends React.Component {
             clickHandler: this.clickHandler
         });
     }
+    setCurrentlySelected(coords) {
+        this.setState({
+            selected: coords
+        });
+    }
 
     /**
      * @return {?ReactElement}
      */
     getModalElement() {
         switch (this.state.gameState) {
-        case 'ended':
-            let [ firstPlayer, secondPlayer ] = Game.players;
-            let scores = this.game.scores;
-            let winner;
-            if (scores[firstPlayer] > scores[secondPlayer]) {
-                winner = firstPlayer;
-            } else if (scores[firstPlayer] < scores[secondPlayer]) {
-                winner = secondPlayer;
-            } else {
-                winner = null;
-            }
+            case 'ended':
+                let [firstPlayer, secondPlayer] = Game.players;
+                let scores = this.game.scores;
+                let winner;
+                if (scores[firstPlayer] > scores[secondPlayer]) {
+                    winner = firstPlayer;
+                } else if (scores[firstPlayer] < scores[secondPlayer]) {
+                    winner = secondPlayer;
+                } else {
+                    winner = null;
+                }
 
-            return React.createElement(Modal,
-                { isVisible: this.state.isModalOpen },
-                DOM.h2(null, 'The game ended'),
-                this.getScoreElement(winner),
-                DOM.div({ className: 'controls' },
-                    DOM.a(
-                        { className: 'btn btn--primary',
-                            onClick: this.restartRequestHandler },
-                        'restart'
-                    ),
-                    ' ',
-                    DOM.a(
-                        { className: 'btn',
-                            onClick: this.modalCloseRequestHandler },
-                        'close'
+                return React.createElement(Modal,
+                    { isVisible: this.state.isModalOpen },
+                    DOM.h2(null, 'The game ended'),
+                    this.getScoreElement(winner),
+                    DOM.div({ className: 'controls' },
+                        DOM.a(
+                            {
+                                className: 'btn btn--primary',
+                                onClick: this.restartRequestHandler
+                            },
+                            'restart'
+                        ),
+                        ' ',
+                        DOM.a(
+                            {
+                                className: 'btn',
+                                onClick: this.modalCloseRequestHandler
+                            },
+                            'close'
+                        )
                     )
-                )
-            );
-        default:
-            return null;
+                );
+            default:
+                return null;
         }
     }
 
@@ -163,8 +193,10 @@ export default class ReversiApp extends React.Component {
      */
     render() {
         return DOM.div(
-            { className: 'stretch-height-container',
-                'data-state': this.state.gameState },
+            {
+                className: 'stretch-height-container',
+                'data-state': this.state.gameState
+            },
             DOM.header({ className: 'row row--center' },
                 DOM.div({ className: 'col col--1of3' }, this.getScoreElement()),
                 DOM.div({ className: 'col u-text-right' },
@@ -174,14 +206,18 @@ export default class ReversiApp extends React.Component {
             ),
             DOM.main({ className: 'container stretch-height' },
                 DOM.div(
-                    { className: 'ratio-1by1 center react-board-container',
-                        ref: 'boardContainer' },
+                    {
+                        className: 'ratio-1by1 center react-board-container',
+                        ref: 'boardContainer'
+                    },
                     this.getReactBoardElement()
                 )
             ),
             DOM.footer({ className: 'u-text-right' },
-                DOM.a({ href: 'https://en.wikipedia.org/wiki/Reversi#Rules',
-                    target: '_blank' },
+                DOM.a({
+                    href: 'https://en.wikipedia.org/wiki/Reversi#Rules',
+                    target: '_blank'
+                },
                     'Rules'
                 ),
                 ', ',

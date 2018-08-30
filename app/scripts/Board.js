@@ -4,7 +4,7 @@
  * @param {number} size
  * @return {Array.<undefined>}
  */
-let getAnEmptyArray = function(size) {
+let getAnEmptyArray = function (size) {
     return (new Array(size)).fill(undefined);
 };
 
@@ -27,8 +27,8 @@ let range = function range(start, end, length = Math.abs(end - start) + 1) {
  * @param {Array} arr2
  * @return {Array}
  */
-let zip = function(arr1, arr2) {
-    return arr1.map((v, i) => [ v, arr2[i] ]);
+let zip = function (arr1, arr2) {
+    return arr1.map((v, i) => [v, arr2[i]]);
 };
 
 
@@ -50,7 +50,7 @@ export default class Board {
      * @param {Array.<number>} coordinates
      * @return {boolean}
      */
-    areCoordinatesValid([ x, y ]) {
+    areCoordinatesValid([x, y]) {
         return (
             x >= 0 && x < this.size &&
             y >= 0 && y < this.size
@@ -62,7 +62,7 @@ export default class Board {
      * @param {Array.<number>} to
      * @return {Array.<Array.<number>>}
      */
-    getCoordinatesBetween([ x1, y1 ], [ x2, y2 ]) {
+    getCoordinatesBetween([x1, y1], [x2, y2]) {
         let dx = Math.abs(x1 - x2);
         let dy = Math.abs(y1 - y2);
         let length = Math.max(dx, dy) + 1;
@@ -79,8 +79,8 @@ export default class Board {
      * @throws {Error}
      * @return {Board}
      */
-    setField([ x, y ], value = Board.EMPTY_FIELD) {
-        let prevValue = this.getField([ x, y ]);
+    setField([x, y], value = Board.EMPTY_FIELD) {
+        let prevValue = this.getField([x, y]);
         if (prevValue === value) {
             return this;
         }
@@ -113,8 +113,8 @@ export default class Board {
      * @throws {Error}
      * @return {*}
      */
-    getField([ x, y ]) {
-        if (!this.areCoordinatesValid([ x, y ])) {
+    getField([x, y]) {
+        if (!this.areCoordinatesValid([x, y])) {
             throw new Error('Invalid coordinates!');
         }
 
@@ -181,7 +181,7 @@ export default class Board {
     *[Symbol.iterator]() {
         for (let x = 0; x < this.size; x += 1) {
             for (let y = 0; y < this.size; y += 1) {
-                yield { coordinates: [ x, y ], value: this.data[x][y] };
+                yield { coordinates: [x, y], value: this.data[x][y] };
             }
         }
     }
